@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">SAPR</string>
+
+    <!-- Construction card view layout-->
+    <string name="view_the_solution">View the solution</string>
+    <string name="rod_image">Rod Image</string>
+
+    <!-- Construction card view time-->
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="few_days_ago">Few days ago</string>
+    <string name="one_week_ago">One week ago</string>
+    <string name="two_weeks_ago">Two weeks ago</string>
+    <string name="one_month_ago">One month ago</string>
+    <string name="few_months_ago">Few months ago</string>
+    <string name="few_years_ago">Few years ago</string>
+
+    <!-- Dialog knots count -->
+    <string name="dialog_knot_count_hint">Enter the number of nodes</string>
+    <string name="dialog_knot_count_btn_add">Apply</string>
+    <string name="dialog_knot_count_correct_msg">Please enter a correct Value!</string>
+
+    <!-- ConstructionFragment -->
+    <string name="nodes_title">Nodes</string>
+    <string name="rods_title">Rods</string>
+    <string name="construction_btn_calculate">Calculate</string>
+    <string name="construction_btn_add_rod">Add rod</string>
+    <string name="construction_btn_add_node">Add node</string>
+
+    <!-- Rod card view -->
+    <string name="rods_number">Rod №%s</string>
+    <string name="rod_cv_linear_load">Linear load</string>
+    <string name="rod_cv_permissible_voltage">Permissible voltage</string>
+    <string name="rod_cv_elastic_modulus">Elastic modulus</string>
+    <string name="rod_cv_sectional_area">Sectional area</string>
+
+    <!-- Knot card view -->
+    <string name="knots_number">Node №%s</string>
+    <string name="knot_cv_x_coordinate">X coordinate</string>
+    <string name="knot_cv_concentrated_load">Concentrated load</string>
+    <string name="knot_cv_support">Support</string>
+
+</resources>
