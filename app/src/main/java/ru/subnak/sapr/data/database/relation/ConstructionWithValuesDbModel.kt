@@ -12,13 +12,13 @@ data class ConstructionWithValuesDbModel(
     val constructionDbModel: ConstructionDbModel,
     @Relation(
         parentColumn = "id",
-        entityColumn = "rod_id",
+        entityColumn = "construction_id",
         entity = RodDbModel::class
     )
     val rodDbModels: List<RodDbModel>,
     @Relation(
         parentColumn = "id",
-        entityColumn = "knot_id",
+        entityColumn = "construction_id",
         entity = KnotDbModel::class
     )
     val knotDbModels: List<KnotDbModel>

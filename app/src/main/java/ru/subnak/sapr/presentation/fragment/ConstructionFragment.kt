@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.subnak.sapr.databinding.FragmentConstructionBinding
 import ru.subnak.sapr.domain.model.Construction
+import ru.subnak.sapr.domain.model.Rod
 import ru.subnak.sapr.presentation.ConstructionApplication
 import ru.subnak.sapr.presentation.adapter.KnotListAdapter
 import ru.subnak.sapr.presentation.adapter.RodListAdapter
@@ -71,7 +72,6 @@ class ConstructionFragment : Fragment() {
         constructionViewModel.knotList.observe(viewLifecycleOwner){
             knotListAdapter.submitList(it)
         }
-
         launchRightMode()
     }
 

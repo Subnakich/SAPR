@@ -13,7 +13,9 @@ class ConstructionRepositoryImpl @Inject constructor(
     private val constructionDao: ConstructionDao
 ) : ConstructionRepository {
     override suspend fun getConstruction(constructionId: Int): Construction {
-        return mapper.mapConstructionDbModelWithValuesToEntity(constructionDao.getConstruction(constructionId))
+        return mapper.mapConstructionDbModelWithValuesToEntity(
+            constructionDao.getConstruction(constructionId)
+        )
     }
 
     override suspend fun addConstruction(construction: Construction) {

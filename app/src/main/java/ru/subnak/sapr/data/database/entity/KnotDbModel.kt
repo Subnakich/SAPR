@@ -18,7 +18,7 @@ import androidx.room.ForeignKey.CASCADE
 data class KnotDbModel(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "knot_id")
-    val id: Int,
+    val knotId: Int,
     @ColumnInfo(name = "construction_id")
     var constructionId: Int,
     val x: Int,

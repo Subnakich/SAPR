@@ -48,7 +48,7 @@ class ConstructionMapper @Inject constructor() {
         elasticModule = rod.elasticModule,
         voltage = rod.voltage,
         loadRunning = rod.loadRunning,
-        id = rod.rodId,
+        rodId = rod.rodId,
         constructionId = rod.constructionId
     )
 
@@ -60,7 +60,7 @@ class ConstructionMapper @Inject constructor() {
         x = knot.x,
         loadConcentrated = knot.loadConcentrated,
         prop = knot.prop,
-        id = knot.knotId,
+        knotId = knot.knotId,
         constructionId = knot.constructionId
     )
 
@@ -81,7 +81,7 @@ class ConstructionMapper @Inject constructor() {
         elasticModule = rod.elasticModule,
         voltage = rod.voltage,
         loadRunning = rod.loadRunning,
-        rodId = rod.id,
+        rodId = rod.rodId,
         constructionId = rod.constructionId
     )
 
@@ -93,7 +93,7 @@ class ConstructionMapper @Inject constructor() {
         x = knot.x,
         loadConcentrated = knot.loadConcentrated,
         prop = knot.prop,
-        knotId = knot.id,
+        knotId = knot.knotId,
         constructionId = knot.constructionId
     )
 }

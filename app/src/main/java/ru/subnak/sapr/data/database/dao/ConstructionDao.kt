@@ -11,7 +11,7 @@ import ru.subnak.sapr.data.database.relation.ConstructionWithValuesDbModel
 interface ConstructionDao {
 
     @Transaction
-    @Query("SELECT * FROM construction WHERE id=:constructionId LIMIT 1")
+    @Query("SELECT * FROM construction WHERE id=:constructionId")
     suspend fun getConstruction(constructionId: Int): ConstructionWithValuesDbModel
 
     @Query("DELETE FROM construction WHERE id=:constructionId")

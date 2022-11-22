@@ -77,9 +77,8 @@ class MainFragment : Fragment() {
 
     private fun knotsDialogAdd() {
         val alertDialog = AlertDialog.Builder(requireContext()).create()
-        val settingsBinding = KnotCountDialogBinding.inflate(layoutInflater) // SettingsDialogBinding provided by View binding
+        val settingsBinding = KnotCountDialogBinding.inflate(layoutInflater)
         alertDialog.setView(settingsBinding.root)
-
         settingsBinding.buttonKnotCount.setOnClickListener {
             val count = parseKnotCount(settingsBinding.etKnotCount.text.toString())
             if (validateKnotCount(count)) {

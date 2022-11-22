@@ -16,7 +16,7 @@ import ru.subnak.sapr.data.database.entity.RodDbModel
         RodDbModel::class,
         KnotDbModel::class
     ],
-    version = 2,
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

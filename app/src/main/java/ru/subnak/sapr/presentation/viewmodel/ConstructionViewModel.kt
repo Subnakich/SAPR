@@ -1,5 +1,6 @@
 package ru.subnak.sapr.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,9 +30,6 @@ class ConstructionViewModel @Inject constructor(
     val knotList: LiveData<List<Knot>>
         get() = _knotList
 
-    //var rodList: MutableList<Rod> = mutableListOf()
-    //var knotList: MutableList<Knot> = mutableListOf()
-
     fun addRod(construction: Construction) {
         viewModelScope.launch {
             addConstructionUseCase.invoke(construction)
@@ -44,7 +42,6 @@ class ConstructionViewModel @Inject constructor(
             _construction.value = construction
             _rodList.value = construction.rodValues.toMutableList()
             _knotList.value = construction.knotValues.toMutableList()
-            //Log.d("ConstrViewModel", construction.toString())
         }
     }
 }

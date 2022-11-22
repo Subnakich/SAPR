@@ -18,7 +18,7 @@ import androidx.room.ForeignKey.CASCADE
 data class RodDbModel(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "rod_id")
-    val id: Int,
+    val rodId: Int,
     @ColumnInfo(name = "construction_id")
     var constructionId: Int,
     val square: Int,
