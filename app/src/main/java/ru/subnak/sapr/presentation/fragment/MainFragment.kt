@@ -2,6 +2,7 @@ package ru.subnak.sapr.presentation.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.subnak.sapr.R
 import ru.subnak.sapr.databinding.FragmentMainBinding
-import ru.subnak.sapr.databinding.KnotCountDialogBinding
 import ru.subnak.sapr.presentation.ConstructionApplication
 import ru.subnak.sapr.presentation.adapter.ConstructionListAdapter
 import ru.subnak.sapr.presentation.viewmodel.MainViewModel
@@ -64,43 +64,15 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         setupRecyclerView()
         viewModel.constructionList.observe(viewLifecycleOwner) {
-            constructionListAdapter.submitList(it)
+            constructionListAdapter.submitList(it.reversed())
         }
         setupButtonAdd()
     }
 
     private fun setupButtonAdd() {
         binding.buttonAdd.setOnClickListener{
-            knotsDialogAdd()
+            launchFragment(ConstructionFragment.newInstanceAddConstruction())
         }
-    }
-
-    private fun knotsDialogAdd() {
-        val alertDialog = AlertDialog.Builder(requireContext()).create()
-        val settingsBinding = KnotCountDialogBinding.inflate(layoutInflater)
-        alertDialog.setView(settingsBinding.root)
-        settingsBinding.buttonKnotCount.setOnClickListener {
-            val count = parseKnotCount(settingsBinding.etKnotCount.text.toString())
-            if (validateKnotCount(count)) {
-                launchFragment(ConstructionFragment.newInstanceAddConstruction(count))
-                alertDialog.dismiss()
-            } else {
-                Toast.makeText(requireContext(), getString(R.string.dialog_knot_count_correct_msg), Toast.LENGTH_LONG).show()
-            }
-        }
-        alertDialog.show()
-    }
-
-    private fun parseKnotCount(count: String?): Int {
-        return try {
-            count?.trim()?.toInt() ?: 0
-        } catch (e: Exception) {
-            0
-        }
-    }
-
-    private fun validateKnotCount(count: Int): Boolean {
-        return count != 0
     }
 
     private fun setupRecyclerView() {
@@ -108,15 +80,14 @@ class MainFragment : Fragment() {
         constructionListAdapter = ConstructionListAdapter()
         rvConstructionList.adapter = constructionListAdapter
         val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
-        layoutManager.stackFromEnd
+            LinearLayoutManager(requireContext())
         rvConstructionList.layoutManager = layoutManager
         setupClickListener()
     }
 
     private fun setupClickListener() {
         constructionListAdapter.onConstructionListClickListener = {
-            val fragment = ConstructionFragment.newInstanceEditConstruction(it.id)
+            val fragment = CalculatingFragment.newInstanceConstruction(it.id)
             launchFragment(fragment)
         }
     }

@@ -3,7 +3,8 @@
 
     <!-- Construction card view layout-->
     <string name="view_the_solution">View the solution</string>
-    <string name="rod_image">Rod Image</string>
+    <string name="rod_image">Construction Image</string>
+
 
     <!-- Construction card view time-->
     <string name="today">Today</string>
@@ -15,10 +16,8 @@
     <string name="few_months_ago">Few months ago</string>
     <string name="few_years_ago">Few years ago</string>
 
-    <!-- Dialog knots count -->
-    <string name="dialog_knot_count_hint">Enter the number of nodes</string>
-    <string name="dialog_knot_count_btn_add">Apply</string>
-    <string name="dialog_knot_count_correct_msg">Please enter a correct Value!</string>
+    <!-- MainFragment -->
+    <string name="main_fragment_add_a_construction">Add a construction</string>
 
     <!-- ConstructionFragment -->
     <string name="nodes_title">Nodes</string>
@@ -26,6 +25,10 @@
     <string name="construction_btn_calculate">Calculate</string>
     <string name="construction_btn_add_rod">Add rod</string>
     <string name="construction_btn_add_node">Add node</string>
+    <string name="toast_rod_to_many">Too many rods!</string>
+    <string name="toast_need_support">There must be at least one support</string>
+    <string name="toast_need_rods">Not enough rods in construction</string>
+
 
     <!-- Rod card view -->
     <string name="rods_number">Rod №%s</string>
@@ -39,5 +42,29 @@
     <string name="knot_cv_x_coordinate">X coordinate</string>
     <string name="knot_cv_concentrated_load">Concentrated load</string>
     <string name="knot_cv_support">Support</string>
+
+
+    <!-- Dialog add/edit knot -->
+    <string name="dialog_knot_rigid_support">Rigid support</string>
+    <string name="dialog_knot_x_coordinate">Enter the X coordinate</string>
+    <string name="dialog_knot_load_concentrated">Enter a concentrated load</string>
+    <string name="dialog_knot_btn_apply">Apply</string>
+    <string name="dialog_knot_error_input_x">Invalid X coordinate</string>
+    <string name="dialog_knot_error_input_load_concentrated">Invalid concentrated load</string>
+
+    <!-- Dialog add/edit rod -->
+    <string name="dialog_rod_square">Enter the cross-sectional area</string>
+    <string name="dialog_rod_elastic_module">Enter the modulus of elasticity</string>
+    <string name="dialog_rod_load_running">Enter the linear load</string>
+    <string name="dialog_rod_voltage">Enter the allowable voltage</string>
+    <string name="dialog_rod_btn_apply">Apply</string>
+    <string name="dialog_rod_error_input_square">Invalid cross-sectional area</string>
+    <string name="dialog_rod_error_input_elastic_module">Invalid modulus of elasticity</string>
+    <string name="dialog_rod_error_input_load_running">Invalid linear load</string>
+    <string name="dialog_rod_error_input_voltage">Invalid allowable voltage</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="calculating_fragment_construction_image">Construction image</string>
+
 
 </resources>

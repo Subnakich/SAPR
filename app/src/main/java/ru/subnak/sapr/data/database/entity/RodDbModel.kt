@@ -24,5 +24,6 @@ data class RodDbModel(
     val square: Int,
     val elasticModule: Int,
     val voltage: Int,
-    val loadRunning: Int
+    val loadRunning: Int,
+    val rodNumber: Int
 )

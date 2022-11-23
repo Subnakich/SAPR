@@ -23,5 +23,6 @@ data class KnotDbModel(
     var constructionId: Int,
     val x: Int,
     val prop: Boolean,
-    val loadConcentrated: Int
+    val loadConcentrated: Int,
+    val knotNumber: Int
 )

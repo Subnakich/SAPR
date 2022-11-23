@@ -2,14 +2,22 @@ package ru.subnak.sapr.presentation.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import ru.subnak.sapr.R
 import ru.subnak.sapr.databinding.FragmentConstructionBinding
+import ru.subnak.sapr.databinding.KnotDialogBinding
+import ru.subnak.sapr.databinding.RodDialogBinding
 import ru.subnak.sapr.domain.model.Construction
+import ru.subnak.sapr.domain.model.Knot
 import ru.subnak.sapr.domain.model.Rod
 import ru.subnak.sapr.presentation.ConstructionApplication
 import ru.subnak.sapr.presentation.adapter.KnotListAdapter
@@ -35,7 +43,6 @@ class ConstructionFragment : Fragment() {
 
     private var screenMode: String = MODE_UNKNOWN
     private var constructionId: Int = Construction.UNDEFINED_ID
-    private var knotCount: Int = KNOT_COUNT_DEFAULT
 
     private val component by lazy {
         (requireActivity().application as ConstructionApplication).component
@@ -61,18 +68,12 @@ class ConstructionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        constructionViewModel = ViewModelProvider(this, viewModelFactory)[ConstructionViewModel::class.java]
+        constructionViewModel =
+            ViewModelProvider(this, viewModelFactory)[ConstructionViewModel::class.java]
         setupRecyclerView()
-        constructionViewModel.construction.observe(viewLifecycleOwner){
-
-        }
-        constructionViewModel.rodList.observe(viewLifecycleOwner){
-            rodListAdapter.submitList(it)
-        }
-        constructionViewModel.knotList.observe(viewLifecycleOwner){
-            knotListAdapter.submitList(it)
-        }
+        observeViewModel()
         launchRightMode()
+        setClickListeners()
     }
 
     override fun onDestroyView() {
@@ -80,13 +81,235 @@ class ConstructionFragment : Fragment() {
         _binding = null
     }
 
+    private fun setClickListeners() {
+        binding.btnAddKnot.setOnClickListener {
+            knotsDialog()
+        }
+        binding.btnAddRod.setOnClickListener {
+            val rodListSize = constructionViewModel.getRodListSize()
+            val knotListSize = constructionViewModel.getKnotListSize()
+            if (rodListSize < knotListSize - 1) {
+                rodsDialog()
+            } else {
+                Toast.makeText(requireContext(), R.string.toast_rod_to_many, Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+        binding.btnSaveConstruction.setOnClickListener {
+            if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_NULL) {
+                val construction = constructionViewModel.addConstruction()
+                //val fragment = CalculatingFragment.newInstance(construction)
+                //launchFragment(fragment)
+            } else if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_PROP) {
+                Toast.makeText(requireContext(), R.string.toast_need_support, Toast.LENGTH_LONG)
+                    .show()
+            } else {
+                Toast.makeText(requireContext(), R.string.toast_need_rods, Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        requireActivity().supportFragmentManager.popBackStack()
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun knotsDialog(knot: Knot? = null) {
+        val alertDialog = AlertDialog.Builder(requireContext()).create()
+        val knotBinding = KnotDialogBinding.inflate(layoutInflater)
+        alertDialog.setView(knotBinding.root)
+        observeViewModelForKnotDialog(knotBinding)
+        knotEditTextAddTextChangedListeners(knotBinding)
+        if (knot !== null) {
+            knotBinding.etKnotCoordX.setText(knot.x.toString())
+            knotBinding.etKnotLoadConcentrated.setText(knot.loadConcentrated.toString())
+            knotBinding.cbKnotProp.isChecked = knot.prop
+
+            knotBinding.buttonKnotApply.setOnClickListener {
+                val closeDialog = constructionViewModel.editKnot(
+                    knotBinding.etKnotCoordX.text?.toString(),
+                    knotBinding.etKnotLoadConcentrated.text?.toString(),
+                    knotBinding.cbKnotProp.isChecked,
+                    knot.knotNumber
+                )
+                if (closeDialog) {
+                    alertDialog.dismiss()
+                }
+            }
+        } else {
+            knotBinding.buttonKnotApply.setOnClickListener {
+                val closeDialog = constructionViewModel.addKnot(
+                    knotBinding.etKnotCoordX.text?.toString(),
+                    knotBinding.etKnotLoadConcentrated.text?.toString(),
+                    knotBinding.cbKnotProp.isChecked
+                )
+                if (closeDialog) {
+                    alertDialog.dismiss()
+                }
+            }
+        }
+        alertDialog.show()
+        alertDialog.setOnCancelListener {
+            constructionViewModel.resetErrorInputX()
+            constructionViewModel.resetErrorInputLoadConcentrated()
+        }
+    }
+
+    private fun observeViewModelForKnotDialog(knotBinding: KnotDialogBinding) {
+        constructionViewModel.errorInputX.observe(viewLifecycleOwner) {
+            val message = if (it) {
+                getString(R.string.dialog_knot_error_input_x)
+            } else {
+                null
+            }
+            knotBinding.etKnotCoordX.error = message
+        }
+    }
+
+    private fun knotEditTextAddTextChangedListeners(knotBinding: KnotDialogBinding) {
+        knotBinding.etKnotCoordX.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                constructionViewModel.resetErrorInputX()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+    }
+
+    private fun rodsDialog(rod: Rod? = null) {
+        val alertDialog = AlertDialog.Builder(requireContext()).create()
+        val rodBinding = RodDialogBinding.inflate(layoutInflater)
+        alertDialog.setView(rodBinding.root)
+        observeViewModelForRodDialog(rodBinding)
+        rodEditTextAddTextChangedListeners(rodBinding)
+        if (rod !== null) {
+            rodBinding.etRodSquare.setText(rod.square.toString())
+            rodBinding.etRodElasticModule.setText(rod.elasticModule.toString())
+            rodBinding.etRodLoadRunning.setText(rod.loadRunning.toString())
+            rodBinding.etRodVoltage.setText(rod.voltage.toString())
+
+            rodBinding.buttonRodApply.setOnClickListener {
+                val closeDialog = constructionViewModel.editRod(
+                    rodBinding.etRodSquare.text?.toString(),
+                    rodBinding.etRodElasticModule.text?.toString(),
+                    rodBinding.etRodLoadRunning.text?.toString(),
+                    rodBinding.etRodVoltage.text?.toString(),
+                    rod.rodNumber
+                )
+                if (closeDialog) {
+                    alertDialog.dismiss()
+                }
+            }
+        } else {
+            rodBinding.buttonRodApply.setOnClickListener {
+                val closeDialog = constructionViewModel.addRod(
+                    rodBinding.etRodSquare.text?.toString(),
+                    rodBinding.etRodElasticModule.text?.toString(),
+                    rodBinding.etRodLoadRunning.text?.toString(),
+                    rodBinding.etRodVoltage.text?.toString()
+                )
+                if (closeDialog) {
+                    alertDialog.dismiss()
+                }
+            }
+        }
+        alertDialog.show()
+        alertDialog.setOnCancelListener {
+            constructionViewModel.resetErrorInputSquare()
+            constructionViewModel.resetErrorInputElasticModule()
+            constructionViewModel.resetErrorInputVoltage()
+        }
+    }
+
+    private fun observeViewModelForRodDialog(rodBinding: RodDialogBinding) {
+        constructionViewModel.errorInputSquare.observe(viewLifecycleOwner) {
+            val message = if (it) {
+                getString(R.string.dialog_rod_error_input_square)
+            } else {
+                null
+            }
+            rodBinding.etRodSquare.error = message
+        }
+        constructionViewModel.errorInputElasticModule.observe(viewLifecycleOwner) {
+            val message = if (it) {
+                getString(R.string.dialog_rod_error_input_elastic_module)
+            } else {
+                null
+            }
+            rodBinding.etRodElasticModule.error = message
+        }
+        constructionViewModel.errorInputVoltage.observe(viewLifecycleOwner) {
+            val message = if (it) {
+                getString(R.string.dialog_rod_error_input_voltage)
+            } else {
+                null
+            }
+            rodBinding.etRodVoltage.error = message
+        }
+    }
+
+    private fun rodEditTextAddTextChangedListeners(rodBinding: RodDialogBinding) {
+        rodBinding.etRodSquare.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                constructionViewModel.resetErrorInputSquare()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+        rodBinding.etRodElasticModule.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                constructionViewModel.resetErrorInputElasticModule()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+        rodBinding.etRodVoltage.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                constructionViewModel.resetErrorInputVoltage()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+    }
+
     private fun setupRecyclerView() {
         setupRodRecyclerView()
         setupKnotRecyclerView()
+        setupRecyclersClickListeners()
     }
 
     private fun setupRodRecyclerView() {
         val rvRodList = binding.rvRods
+        rvRodList.setHasFixedSize(false)
+        rvRodList.isNestedScrollingEnabled = false
         rodListAdapter = RodListAdapter()
         rvRodList.adapter = rodListAdapter
         rvRodList.layoutManager = LinearLayoutManager(requireContext())
@@ -94,28 +317,38 @@ class ConstructionFragment : Fragment() {
 
     private fun setupKnotRecyclerView() {
         val rvKnotList = binding.rvKnots
+        rvKnotList.setHasFixedSize(false)
+        rvKnotList.isNestedScrollingEnabled = false
         knotListAdapter = KnotListAdapter()
         rvKnotList.adapter = knotListAdapter
         rvKnotList.layoutManager = LinearLayoutManager(requireContext())
     }
 
+    private fun setupRecyclersClickListeners() {
+        knotListAdapter.onKnotListClickListener = {
+            knotsDialog(it)
+        }
+        rodListAdapter.onRodListClickListener = {
+            rodsDialog(it)
+        }
+    }
+
+    private fun observeViewModel() {
+        constructionViewModel.rodList.observe(viewLifecycleOwner) {
+            rodListAdapter.submitList(it.toList())
+        }
+        constructionViewModel.knotList.observe(viewLifecycleOwner) {
+            knotListAdapter.submitList(it.toList())
+        }
+    }
+
     private fun launchEditMode() {
         constructionViewModel.getConstruction(constructionId)
-//        binding.buttonSave.setOnClickListener {
-//            shopItemViewModel.editShopItem(
-//                binding.etName.text?.toString(),
-//                binding.etCount.text?.toString()
-//            )
-//        }
+
     }
 
     private fun launchAddMode() {
-//        binding.buttonSave.setOnClickListener {
-//            shopItemViewModel.addShopItem(
-//                binding.etName.text?.toString(),
-//                binding.etCount.text?.toString()
-//            )
-//        }
+
     }
 
     private fun launchRightMode() {
@@ -128,7 +361,7 @@ class ConstructionFragment : Fragment() {
     private fun parseArguments() {
         val args = requireArguments()
         if (!args.containsKey(SCREEN_MODE)) {
-            throw RuntimeException("Param screen mode is absent")
+            throw RuntimeException("Argument is null")
         }
         val mode = args.getString(SCREEN_MODE)
         if (mode != MODE_ADD && mode != MODE_EDIT) {
@@ -140,30 +373,24 @@ class ConstructionFragment : Fragment() {
                 throw RuntimeException("Param construction id is absent")
             }
             constructionId = args.getInt(CONSTRUCTION_ID, Construction.UNDEFINED_ID)
-        } else {
-            if (!args.containsKey(KNOT_COUNT)) {
-                throw RuntimeException("Param knot count is absent")
-            }
-            knotCount = args.getInt(KNOT_COUNT, KNOT_COUNT_DEFAULT)
         }
     }
 
     companion object {
 
-        private const val KNOT_COUNT_DEFAULT = 0
+        private const val MODE_ADD_NUMBER = 100
+        private const val MODE_EDIT_NUMBER = 101
 
-        private const val KNOT_COUNT = "extra_knot_count"
         private const val SCREEN_MODE = "extra_mode"
         private const val CONSTRUCTION_ID = "extra_construction_id"
         private const val MODE_EDIT = "mode_edit"
         private const val MODE_ADD = "mode_add"
         private const val MODE_UNKNOWN = ""
 
-        fun newInstanceAddConstruction(knotCount: Int) =
+        fun newInstanceAddConstruction() =
             ConstructionFragment().apply {
                 arguments = Bundle().apply {
                     putString(SCREEN_MODE, MODE_ADD)
-                    putInt(KNOT_COUNT, knotCount)
                 }
             }
 

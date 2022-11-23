@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.fragment.CalculatingFragment">
+
+
+    <ImageView
+        android:id="@+id/construction_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:contentDescription="@string/calculating_fragment_construction_image"
+        android:src="@drawable/ic_baseline_add_24"
+        android:scaleType="centerCrop"
+        />
+
+
+</FrameLayout>

@@ -49,7 +49,8 @@ class ConstructionMapper @Inject constructor() {
         voltage = rod.voltage,
         loadRunning = rod.loadRunning,
         rodId = rod.rodId,
-        constructionId = rod.constructionId
+        constructionId = rod.constructionId,
+        rodNumber = rod.rodNumber
     )
 
     private fun mapListKnotEntityToDbModel(list: List<Knot>) = list.map {
@@ -61,7 +62,8 @@ class ConstructionMapper @Inject constructor() {
         loadConcentrated = knot.loadConcentrated,
         prop = knot.prop,
         knotId = knot.knotId,
-        constructionId = knot.constructionId
+        constructionId = knot.constructionId,
+        knotNumber = knot.knotNumber
     )
 
     fun mapConstructionDbModelWithValuesToEntity(construction: ConstructionWithValuesDbModel) = Construction(
@@ -82,7 +84,8 @@ class ConstructionMapper @Inject constructor() {
         voltage = rod.voltage,
         loadRunning = rod.loadRunning,
         rodId = rod.rodId,
-        constructionId = rod.constructionId
+        constructionId = rod.constructionId,
+        rodNumber = rod.rodNumber
     )
 
     private fun mapListKnotValueDbModelToEntity(list: List<KnotDbModel>) = list.map {
@@ -94,6 +97,7 @@ class ConstructionMapper @Inject constructor() {
         loadConcentrated = knot.loadConcentrated,
         prop = knot.prop,
         knotId = knot.knotId,
-        constructionId = knot.constructionId
+        constructionId = knot.constructionId,
+        knotNumber = knot.knotNumber
     )
 }

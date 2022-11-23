@@ -9,6 +9,7 @@ data class Rod(
     val elasticModule: Int,
     val voltage: Int,
     val loadRunning: Int,
+    val rodNumber: Int,
     val rodId: Int = UNDEFINED_ID,
     val constructionId: Int = UNDEFINED_ID
 ) : Parcelable {

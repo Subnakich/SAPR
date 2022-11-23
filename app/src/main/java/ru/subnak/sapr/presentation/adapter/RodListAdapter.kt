@@ -12,6 +12,8 @@ import ru.subnak.sapr.presentation.viewholder.RodViewHolder
 
 class RodListAdapter : ListAdapter<Rod, RodViewHolder>(RodCallback()) {
 
+    var onRodListClickListener: ((Rod) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RodViewHolder {
         val binding = RodCardviewBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -28,6 +30,9 @@ class RodListAdapter : ListAdapter<Rod, RodViewHolder>(RodCallback()) {
         holder.binding.tvRodVoltage.text = rod.voltage.toString()
         holder.binding.tvLoadRunning.text = rod.loadRunning.toString()
         holder.binding.tvRodElasticModule.text = rod.elasticModule.toString()
+        holder.itemView.setOnClickListener {
+            onRodListClickListener?.invoke(rod)
+        }
     }
 
     private fun posToString(position: Int, context: Context): String {
