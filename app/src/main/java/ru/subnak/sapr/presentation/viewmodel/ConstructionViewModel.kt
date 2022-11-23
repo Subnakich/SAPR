@@ -1,5 +1,8 @@
 package ru.subnak.sapr.presentation.viewmodel
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +13,7 @@ import ru.subnak.sapr.domain.model.Knot
 import ru.subnak.sapr.domain.model.Rod
 import ru.subnak.sapr.domain.usecase.AddConstructionUseCase
 import ru.subnak.sapr.domain.usecase.GetConstructionUseCase
+import ru.subnak.sapr.presentation.ConstructionDrawable
 import javax.inject.Inject
 
 class ConstructionViewModel @Inject constructor(
@@ -61,9 +65,16 @@ class ConstructionViewModel @Inject constructor(
             val construction = Construction(
                 System.currentTimeMillis(),
                 _knotMutableList,
-                _rodMutableList
+                _rodMutableList,
             )
-            addConstructionUseCase.invoke(construction)
+            val bitmap = createBitmapForSave(construction)
+            val constructionForSave = Construction(
+                System.currentTimeMillis(),
+                _knotMutableList,
+                _rodMutableList,
+                bitmap
+            )
+            addConstructionUseCase.invoke(constructionForSave)
         }
     }
 
@@ -76,6 +87,29 @@ class ConstructionViewModel @Inject constructor(
             _rodList.value = construction.rodValues
             _knotList.value = construction.knotValues
         }
+    }
+
+    private fun createBitmapForSave(construction: Construction): Bitmap? {
+        val myDrawing = ConstructionDrawable(construction)
+        return createBitmap(myDrawing)
+    }
+
+    private fun createBitmap(drawable: Drawable): Bitmap? {
+
+        val bitmap = Bitmap.createBitmap(
+            getConstructionImageWidth(),
+            800,
+            Bitmap.Config.ARGB_8888
+        )
+
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
+    }
+
+    private fun getConstructionImageWidth(): Int {
+        return _knotMutableList.last().x + _knotMutableList.size*500
     }
 
     fun checkPropAndCountOfRods(): Int {

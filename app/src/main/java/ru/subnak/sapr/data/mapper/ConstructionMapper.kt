@@ -23,7 +23,7 @@ class ConstructionMapper @Inject constructor() {
             date = construction.date,
             knotValues = emptyListKnot,
             rodValues = emptyListRod,
-            //img = rod.img,
+            img = construction.img,
         )
     }
 
@@ -36,7 +36,7 @@ class ConstructionMapper @Inject constructor() {
     private fun mapConstructionEntityToDbModel(construction: Construction) = ConstructionDbModel(
         id = construction.id,
         date = construction.date,
-        //img = rod.img
+        img = construction.img
     )
 
     private fun mapListRodEntityToDbModel(list: List<Rod>) = list.map {
@@ -71,7 +71,7 @@ class ConstructionMapper @Inject constructor() {
         date = construction.constructionDbModel.date,
         rodValues = mapListRodValueDbModelToEntity(construction.rodDbModels),
         knotValues = mapListKnotValueDbModelToEntity(construction.knotDbModels),
-        //img = rod.rodDbModel.img,
+        img = construction.constructionDbModel.img,
     )
 
     private fun mapListRodValueDbModelToEntity(list: List<RodDbModel>) = list.map {

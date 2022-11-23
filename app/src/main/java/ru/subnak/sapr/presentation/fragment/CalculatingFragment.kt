@@ -33,7 +33,6 @@ class CalculatingFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentCalculatingBinding = null")
 
     private var constructionId: Int = Construction.UNDEFINED_ID
-    private lateinit var construction: Construction
 
 
     private val component by lazy {
@@ -65,49 +64,11 @@ class CalculatingFragment : Fragment() {
         calculatingViewModel.getConstruction(constructionId)
 
         calculatingViewModel.construction.observe(viewLifecycleOwner) {
-            construction = it
-            val myDrawing = ConstructionDrawable(construction)
-            val bitmap = createBitmap(myDrawing)
-            binding.constructionImage.setImageBitmap(bitmap)
+            binding.constructionImage.setImageBitmap(it.img)
 
         }
 
 
-    }
-
-    private fun createBitmap(drawable: Drawable): Bitmap? {
-        var bitmap: Bitmap? = null
-
-        if (drawable is BitmapDrawable) {
-            if (drawable.bitmap != null) {
-                return drawable.bitmap
-            }
-        }
-
-
-        bitmap = Bitmap.createBitmap(
-            2000,
-            2000,
-            Bitmap.Config.ARGB_8888
-        )
-//        bitmap = if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
-//            Bitmap.createBitmap(
-//                1,
-//                1,
-//                Bitmap.Config.ARGB_8888
-//            )
-//        } else {
-//            Bitmap.createBitmap(
-//                drawable.intrinsicWidth,
-//                drawable.intrinsicHeight,
-//                Bitmap.Config.ARGB_8888
-//            )
-//        }
-
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-        return bitmap
     }
 
     private fun parseArguments() {

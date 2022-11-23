@@ -15,7 +15,6 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
 
     override fun draw(canvas: Canvas) {
 
-
         for (i in construction.knotValues) {
             var absoluteX = 10
             val x = if (construction.knotValues[i.knotNumber - 1].x == 0) {

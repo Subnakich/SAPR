@@ -31,6 +31,7 @@ class ConstructionListAdapter : ListAdapter<Construction, ConstructionViewHolder
     override fun onBindViewHolder(holder: ConstructionViewHolder, position: Int) {
         val construction = getItem(position)
         holder.binding.tvDateHistory.text = getDate(construction.date, holder.itemView.context)
+        holder.binding.ivRod.setImageBitmap(construction.img)
         holder.itemView.setOnClickListener {
             onConstructionListClickListener?.invoke(construction)
         }

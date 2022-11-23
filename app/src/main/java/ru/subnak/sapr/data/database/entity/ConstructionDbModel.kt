@@ -1,5 +1,6 @@
 package ru.subnak.sapr.data.database.entity
 
+import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,5 +13,5 @@ data class ConstructionDbModel(
     @ColumnInfo(name = "id")
     val id: Int,
     val date: Long,
-    //val img: Bitmap? = null,
+    val img: Bitmap? = null,
 )
