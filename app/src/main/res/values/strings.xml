@@ -29,6 +29,8 @@
     <string name="toast_need_support">There must be at least one support</string>
     <string name="toast_need_rods">Not enough rods in construction</string>
 
+    <!-- CalculatingFragment -->
+    <string name="calculating_fragment_construction_image">Construction image</string>
 
     <!-- Rod card view -->
     <string name="rods_number">Rod №%s</string>
@@ -62,9 +64,21 @@
     <string name="dialog_rod_error_input_elastic_module">Invalid modulus of elasticity</string>
     <string name="dialog_rod_error_input_load_running">Invalid linear load</string>
     <string name="dialog_rod_error_input_voltage">Invalid allowable voltage</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="calculating_fragment_construction_image">Construction image</string>
+
+    <!-- Dialog mainFragment choose action -->
+    <string name="dialog_construction_open">Open</string>
+    <string name="dialog_construction_edit">Edit</string>
+    <string name="dialog_construction_delete">Delete</string>
+    <string-array name="dialog_construction_choose_action">
+        <item>@string/dialog_construction_open</item>
+        <item>@string/dialog_construction_edit</item>
+        <item>@string/dialog_construction_delete</item>
+    </string-array>
+
+    <!-- Dialog delete -->
+    <string name="dialog_delete_message_construction">Delete this construction?</string>
+    <string name="dialog_delete_ok">OK</string>
+    <string name="dialog_delete_cancel">Cancel</string>
 
 
 </resources>

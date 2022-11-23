@@ -13,9 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.subnak.sapr.R
+import ru.subnak.sapr.databinding.DialogKnotBinding
+import ru.subnak.sapr.databinding.DialogRodBinding
 import ru.subnak.sapr.databinding.FragmentConstructionBinding
-import ru.subnak.sapr.databinding.KnotDialogBinding
-import ru.subnak.sapr.databinding.RodDialogBinding
 import ru.subnak.sapr.domain.model.Construction
 import ru.subnak.sapr.domain.model.Knot
 import ru.subnak.sapr.domain.model.Rod
@@ -97,9 +97,7 @@ class ConstructionFragment : Fragment() {
         }
         binding.btnSaveConstruction.setOnClickListener {
             if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_NULL) {
-                val construction = constructionViewModel.addConstruction()
-                //val fragment = CalculatingFragment.newInstance(construction)
-                //launchFragment(fragment)
+                constructionViewModel.addConstruction()
             } else if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_PROP) {
                 Toast.makeText(requireContext(), R.string.toast_need_support, Toast.LENGTH_LONG)
                     .show()
@@ -120,7 +118,7 @@ class ConstructionFragment : Fragment() {
 
     private fun knotsDialog(knot: Knot? = null) {
         val alertDialog = AlertDialog.Builder(requireContext()).create()
-        val knotBinding = KnotDialogBinding.inflate(layoutInflater)
+        val knotBinding = DialogKnotBinding.inflate(layoutInflater)
         alertDialog.setView(knotBinding.root)
         observeViewModelForKnotDialog(knotBinding)
         knotEditTextAddTextChangedListeners(knotBinding)
@@ -155,11 +153,10 @@ class ConstructionFragment : Fragment() {
         alertDialog.show()
         alertDialog.setOnCancelListener {
             constructionViewModel.resetErrorInputX()
-            constructionViewModel.resetErrorInputLoadConcentrated()
         }
     }
 
-    private fun observeViewModelForKnotDialog(knotBinding: KnotDialogBinding) {
+    private fun observeViewModelForKnotDialog(knotBinding: DialogKnotBinding) {
         constructionViewModel.errorInputX.observe(viewLifecycleOwner) {
             val message = if (it) {
                 getString(R.string.dialog_knot_error_input_x)
@@ -170,7 +167,7 @@ class ConstructionFragment : Fragment() {
         }
     }
 
-    private fun knotEditTextAddTextChangedListeners(knotBinding: KnotDialogBinding) {
+    private fun knotEditTextAddTextChangedListeners(knotBinding: DialogKnotBinding) {
         knotBinding.etKnotCoordX.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -188,7 +185,7 @@ class ConstructionFragment : Fragment() {
 
     private fun rodsDialog(rod: Rod? = null) {
         val alertDialog = AlertDialog.Builder(requireContext()).create()
-        val rodBinding = RodDialogBinding.inflate(layoutInflater)
+        val rodBinding = DialogRodBinding.inflate(layoutInflater)
         alertDialog.setView(rodBinding.root)
         observeViewModelForRodDialog(rodBinding)
         rodEditTextAddTextChangedListeners(rodBinding)
@@ -231,7 +228,7 @@ class ConstructionFragment : Fragment() {
         }
     }
 
-    private fun observeViewModelForRodDialog(rodBinding: RodDialogBinding) {
+    private fun observeViewModelForRodDialog(rodBinding: DialogRodBinding) {
         constructionViewModel.errorInputSquare.observe(viewLifecycleOwner) {
             val message = if (it) {
                 getString(R.string.dialog_rod_error_input_square)
@@ -258,7 +255,7 @@ class ConstructionFragment : Fragment() {
         }
     }
 
-    private fun rodEditTextAddTextChangedListeners(rodBinding: RodDialogBinding) {
+    private fun rodEditTextAddTextChangedListeners(rodBinding: DialogRodBinding) {
         rodBinding.etRodSquare.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -377,9 +374,6 @@ class ConstructionFragment : Fragment() {
     }
 
     companion object {
-
-        private const val MODE_ADD_NUMBER = 100
-        private const val MODE_EDIT_NUMBER = 101
 
         private const val SCREEN_MODE = "extra_mode"
         private const val CONSTRUCTION_ID = "extra_construction_id"

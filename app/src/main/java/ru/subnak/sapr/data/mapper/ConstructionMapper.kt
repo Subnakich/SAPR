@@ -27,11 +27,12 @@ class ConstructionMapper @Inject constructor() {
         )
     }
 
-    fun mapConstructionWithValuesEntityToDbModel(construction: Construction) = ConstructionWithValuesDbModel(
-        mapConstructionEntityToDbModel(construction),
-        mapListRodEntityToDbModel(construction.rodValues),
-        mapListKnotEntityToDbModel(construction.knotValues)
-    )
+    fun mapConstructionWithValuesEntityToDbModel(construction: Construction) =
+        ConstructionWithValuesDbModel(
+            mapConstructionEntityToDbModel(construction),
+            mapListRodEntityToDbModel(construction.rodValues),
+            mapListKnotEntityToDbModel(construction.knotValues)
+        )
 
     private fun mapConstructionEntityToDbModel(construction: Construction) = ConstructionDbModel(
         id = construction.id,
@@ -66,13 +67,14 @@ class ConstructionMapper @Inject constructor() {
         knotNumber = knot.knotNumber
     )
 
-    fun mapConstructionDbModelWithValuesToEntity(construction: ConstructionWithValuesDbModel) = Construction(
-        id = construction.constructionDbModel.id,
-        date = construction.constructionDbModel.date,
-        rodValues = mapListRodValueDbModelToEntity(construction.rodDbModels),
-        knotValues = mapListKnotValueDbModelToEntity(construction.knotDbModels),
-        img = construction.constructionDbModel.img,
-    )
+    fun mapConstructionDbModelWithValuesToEntity(construction: ConstructionWithValuesDbModel) =
+        Construction(
+            id = construction.constructionDbModel.id,
+            date = construction.constructionDbModel.date,
+            rodValues = mapListRodValueDbModelToEntity(construction.rodDbModels),
+            knotValues = mapListKnotValueDbModelToEntity(construction.knotDbModels),
+            img = construction.constructionDbModel.img,
+        )
 
     private fun mapListRodValueDbModelToEntity(list: List<RodDbModel>) = list.map {
         mapRodDbModelToEntity(it)

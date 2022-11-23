@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import ru.subnak.sapr.R
-import ru.subnak.sapr.databinding.KnotCardviewBinding
+import ru.subnak.sapr.databinding.CardviewKnotBinding
 import ru.subnak.sapr.domain.model.Knot
 import ru.subnak.sapr.presentation.callback.KnotCallback
 import ru.subnak.sapr.presentation.viewholder.KnotViewHolder
@@ -15,7 +15,7 @@ class KnotListAdapter : ListAdapter<Knot, KnotViewHolder>(KnotCallback()) {
     var onKnotListClickListener: ((Knot) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KnotViewHolder {
-        val binding = KnotCardviewBinding.inflate(
+        val binding = CardviewKnotBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

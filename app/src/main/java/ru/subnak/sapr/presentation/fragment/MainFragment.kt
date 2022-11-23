@@ -2,17 +2,16 @@ package ru.subnak.sapr.presentation.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.subnak.sapr.R
 import ru.subnak.sapr.databinding.FragmentMainBinding
+import ru.subnak.sapr.domain.model.Construction
 import ru.subnak.sapr.presentation.ConstructionApplication
 import ru.subnak.sapr.presentation.adapter.ConstructionListAdapter
 import ru.subnak.sapr.presentation.viewmodel.MainViewModel
@@ -70,7 +69,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setupButtonAdd() {
-        binding.buttonAdd.setOnClickListener{
+        binding.buttonAdd.setOnClickListener {
             launchFragment(ConstructionFragment.newInstanceAddConstruction())
         }
     }
@@ -87,9 +86,36 @@ class MainFragment : Fragment() {
 
     private fun setupClickListener() {
         constructionListAdapter.onConstructionListClickListener = {
-            val fragment = CalculatingFragment.newInstanceConstruction(it.id)
+            val fragment = CalculatingFragment.newInstanceCalculating(it.id)
             launchFragment(fragment)
         }
+        constructionListAdapter.onConstructionListLongClickListener = {
+            AlertDialog.Builder(requireContext())
+                .setItems(R.array.dialog_construction_choose_action) { d, c ->
+                    when (c) {
+                        0 -> launchFragment(CalculatingFragment.newInstanceCalculating(it.id))
+                        1 -> launchFragment(ConstructionFragment.newInstanceEditConstruction(it.id))
+                        2 -> deleteDialog(it)
+                    }
+                    d.dismiss()
+                }
+                .create()
+                .show()
+        }
+    }
+
+    private fun deleteDialog(construction: Construction) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.dialog_delete_message_construction)
+            .setPositiveButton(R.string.dialog_delete_ok) { d, _ ->
+                viewModel.deleteConstruction(construction)
+                d.dismiss()
+            }
+            .setNegativeButton(R.string.dialog_delete_cancel) { d, _ ->
+                d.dismiss()
+            }
+            .create()
+            .show()
     }
 
     private fun launchFragment(fragment: Fragment) {

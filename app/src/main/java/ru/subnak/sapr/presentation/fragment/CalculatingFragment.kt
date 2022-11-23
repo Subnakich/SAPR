@@ -1,12 +1,7 @@
 package ru.subnak.sapr.presentation.fragment
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import ru.subnak.sapr.databinding.FragmentCalculatingBinding
 import ru.subnak.sapr.domain.model.Construction
 import ru.subnak.sapr.presentation.ConstructionApplication
-import ru.subnak.sapr.presentation.ConstructionDrawable
 import ru.subnak.sapr.presentation.viewmodel.CalculatingViewModel
 import ru.subnak.sapr.presentation.viewmodel.ViewModelFactory
 import javax.inject.Inject
@@ -85,7 +79,7 @@ class CalculatingFragment : Fragment() {
         private const val CONSTRUCTION_ID = "extra_construction_id"
 
 
-        fun newInstanceConstruction(constructionId: Int) =
+        fun newInstanceCalculating(constructionId: Int) =
             CalculatingFragment().apply {
                 arguments = Bundle().apply {
                     putInt(CONSTRUCTION_ID, constructionId)

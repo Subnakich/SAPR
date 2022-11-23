@@ -20,8 +20,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_knots_title"
@@ -30,8 +29,7 @@
                 android:gravity="center"
                 android:text="@string/nodes_title"
                 android:textSize="20sp"
-                tools:text="Nodes"
-                />
+                tools:text="Nodes" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/md_con_first"

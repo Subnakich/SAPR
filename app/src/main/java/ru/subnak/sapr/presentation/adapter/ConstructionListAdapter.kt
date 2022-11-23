@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import ru.subnak.sapr.R
-import ru.subnak.sapr.databinding.ConstructionCardviewBinding
+import ru.subnak.sapr.databinding.CardviewConstructionBinding
 import ru.subnak.sapr.domain.model.Construction
 import ru.subnak.sapr.presentation.callback.ConstructionCallback
 import ru.subnak.sapr.presentation.viewholder.ConstructionViewHolder
@@ -20,7 +20,7 @@ class ConstructionListAdapter : ListAdapter<Construction, ConstructionViewHolder
     var onConstructionListClickListener: ((Construction) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConstructionViewHolder {
-        val binding = ConstructionCardviewBinding.inflate(
+        val binding = CardviewConstructionBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -34,6 +34,10 @@ class ConstructionListAdapter : ListAdapter<Construction, ConstructionViewHolder
         holder.binding.ivRod.setImageBitmap(construction.img)
         holder.itemView.setOnClickListener {
             onConstructionListClickListener?.invoke(construction)
+        }
+        holder.itemView.setOnLongClickListener {
+            onConstructionListLongClickListener?.invoke(construction)
+            true
         }
     }
 

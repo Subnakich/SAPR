@@ -13,8 +13,7 @@
         android:background="@color/white"
         android:padding="16dp"
         android:contentDescription="@string/calculating_fragment_construction_image"
-        android:scaleType="centerInside"
-        />
+        android:scaleType="centerInside" />
 
 
 </FrameLayout>

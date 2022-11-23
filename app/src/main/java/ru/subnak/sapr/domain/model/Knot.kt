@@ -11,7 +11,7 @@ data class Knot(
     val knotNumber: Int,
     val knotId: Int = UNDEFINED_ID,
     val constructionId: Int = UNDEFINED_ID
-): Parcelable {
+) : Parcelable {
 
     companion object {
 

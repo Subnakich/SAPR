@@ -26,7 +26,7 @@
             tools:srcCompat="@drawable/_____1_"
             android:paddingTop="8dp"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp"/>
+            android:paddingEnd="8dp" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

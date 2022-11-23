@@ -40,10 +40,6 @@ class ConstructionViewModel @Inject constructor(
     val errorInputX: LiveData<Boolean>
         get() = _errorInputX
 
-    private val _errorInputLoadConcentrated = MutableLiveData<Boolean>()
-    val errorInputLoadConcentrated: LiveData<Boolean>
-        get() = _errorInputLoadConcentrated
-
     private val _errorInputSquare = MutableLiveData<Boolean>()
     val errorInputSquare: LiveData<Boolean>
         get() = _errorInputSquare
@@ -55,10 +51,6 @@ class ConstructionViewModel @Inject constructor(
     private val _errorInputVoltage = MutableLiveData<Boolean>()
     val errorInputVoltage: LiveData<Boolean>
         get() = _errorInputVoltage
-
-    private val _errorInputLoadRunning = MutableLiveData<Boolean>()
-    val errorInputLoadRunning: LiveData<Boolean>
-        get() = _errorInputLoadRunning
 
     fun addConstruction() {
         viewModelScope.launch {
@@ -109,7 +101,7 @@ class ConstructionViewModel @Inject constructor(
     }
 
     private fun getConstructionImageWidth(): Int {
-        return _knotMutableList.last().x + _knotMutableList.size*500
+        return _knotMutableList.last().x + _knotMutableList.size * 500
     }
 
     fun checkPropAndCountOfRods(): Int {
@@ -284,10 +276,6 @@ class ConstructionViewModel @Inject constructor(
         _errorInputX.value = false
     }
 
-    fun resetErrorInputLoadConcentrated() {
-        _errorInputLoadConcentrated.value = false
-    }
-
     fun resetErrorInputSquare() {
         _errorInputSquare.value = false
     }
@@ -298,10 +286,6 @@ class ConstructionViewModel @Inject constructor(
 
     fun resetErrorInputVoltage() {
         _errorInputVoltage.value = false
-    }
-
-    fun resetErrorInputLoadRunning() {
-        _errorInputLoadRunning.value = false
     }
 
     companion object {
