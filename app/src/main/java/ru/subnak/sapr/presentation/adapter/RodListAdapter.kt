@@ -13,6 +13,7 @@ import ru.subnak.sapr.presentation.viewholder.RodViewHolder
 class RodListAdapter : ListAdapter<Rod, RodViewHolder>(RodCallback()) {
 
     var onRodListClickListener: ((Rod) -> Unit)? = null
+    var onRodListLongClickListener: ((Rod) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RodViewHolder {
         val binding = CardviewRodBinding.inflate(
@@ -32,6 +33,10 @@ class RodListAdapter : ListAdapter<Rod, RodViewHolder>(RodCallback()) {
         holder.binding.tvRodElasticModule.text = rod.elasticModule.toString()
         holder.itemView.setOnClickListener {
             onRodListClickListener?.invoke(rod)
+        }
+        holder.itemView.setOnLongClickListener {
+            onRodListLongClickListener?.invoke(rod)
+            true
         }
     }
 

@@ -1,7 +1,9 @@
 package ru.subnak.sapr.presentation.adapter
 
 import android.content.Context
+import android.icu.text.Transliterator.Position
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import ru.subnak.sapr.R
@@ -12,7 +14,8 @@ import ru.subnak.sapr.presentation.viewholder.KnotViewHolder
 
 class KnotListAdapter : ListAdapter<Knot, KnotViewHolder>(KnotCallback()) {
 
-    var onKnotListClickListener: ((Knot) -> Unit)? = null
+    var onKnotListClickListener: ((Knot, View) -> Unit)? = null
+    var onKnotListLongClickListener: ((Knot) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KnotViewHolder {
         val binding = CardviewKnotBinding.inflate(
@@ -25,12 +28,17 @@ class KnotListAdapter : ListAdapter<Knot, KnotViewHolder>(KnotCallback()) {
 
     override fun onBindViewHolder(holder: KnotViewHolder, position: Int) {
         val knot = getItem(position)
-        holder.binding.tvKnotTitle.text = posToString(position + 1, holder.itemView.context)
+        holder.binding.tvKnotTitle.text = posToString(position, holder.itemView.context)
         holder.binding.tvKnotCoordX.text = knot.x.toString()
         holder.binding.tvKnotProp.text = knot.prop.toString()
         holder.binding.tvKnotLoadConcentrated.text = knot.loadConcentrated.toString()
+
+        holder.itemView.setOnLongClickListener {
+            onKnotListLongClickListener?.invoke(knot)
+            true
+        }
         holder.itemView.setOnClickListener {
-            onKnotListClickListener?.invoke(knot)
+            onKnotListClickListener?.invoke(knot, it)
         }
     }
 

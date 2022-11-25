@@ -4,14 +4,17 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ru.subnak.sapr.R
 import ru.subnak.sapr.databinding.DialogKnotBinding
 import ru.subnak.sapr.databinding.DialogRodBinding
@@ -106,6 +109,7 @@ class ConstructionFragment : Fragment() {
                     .show()
             }
         }
+
     }
 
     private fun launchFragment(fragment: Fragment) {
@@ -116,26 +120,28 @@ class ConstructionFragment : Fragment() {
             .commit()
     }
 
-    private fun knotsDialog(knot: Knot? = null) {
+    private fun knotsDialog(knot: Knot? = null, position: Int? = null) {
         val alertDialog = AlertDialog.Builder(requireContext()).create()
         val knotBinding = DialogKnotBinding.inflate(layoutInflater)
         alertDialog.setView(knotBinding.root)
         observeViewModelForKnotDialog(knotBinding)
         knotEditTextAddTextChangedListeners(knotBinding)
         if (knot !== null) {
-            knotBinding.etKnotCoordX.setText(knot.x.toString())
-            knotBinding.etKnotLoadConcentrated.setText(knot.loadConcentrated.toString())
-            knotBinding.cbKnotProp.isChecked = knot.prop
+            if (position !== null) {
+                knotBinding.etKnotCoordX.setText(knot.x.toString())
+                knotBinding.etKnotLoadConcentrated.setText(knot.loadConcentrated.toString())
+                knotBinding.cbKnotProp.isChecked = knot.prop
 
-            knotBinding.buttonKnotApply.setOnClickListener {
-                val closeDialog = constructionViewModel.editKnot(
-                    knotBinding.etKnotCoordX.text?.toString(),
-                    knotBinding.etKnotLoadConcentrated.text?.toString(),
-                    knotBinding.cbKnotProp.isChecked,
-                    knot.knotNumber
-                )
-                if (closeDialog) {
-                    alertDialog.dismiss()
+                knotBinding.buttonKnotApply.setOnClickListener {
+                    val closeDialog = constructionViewModel.editKnot(
+                        knotBinding.etKnotCoordX.text?.toString(),
+                        knotBinding.etKnotLoadConcentrated.text?.toString(),
+                        knotBinding.cbKnotProp.isChecked,
+                        position
+                    )
+                    if (closeDialog) {
+                        alertDialog.dismiss()
+                    }
                 }
             }
         } else {
@@ -300,7 +306,6 @@ class ConstructionFragment : Fragment() {
     private fun setupRecyclerView() {
         setupRodRecyclerView()
         setupKnotRecyclerView()
-        setupRecyclersClickListeners()
     }
 
     private fun setupRodRecyclerView() {
@@ -310,6 +315,7 @@ class ConstructionFragment : Fragment() {
         rodListAdapter = RodListAdapter()
         rvRodList.adapter = rodListAdapter
         rvRodList.layoutManager = LinearLayoutManager(requireContext())
+        setupRodRecyclerClickListeners(rvRodList)
     }
 
     private fun setupKnotRecyclerView() {
@@ -319,12 +325,20 @@ class ConstructionFragment : Fragment() {
         knotListAdapter = KnotListAdapter()
         rvKnotList.adapter = knotListAdapter
         rvKnotList.layoutManager = LinearLayoutManager(requireContext())
+        setupKnotRecyclerClickListeners(rvKnotList)
     }
 
-    private fun setupRecyclersClickListeners() {
-        knotListAdapter.onKnotListClickListener = {
-            knotsDialog(it)
+    private fun setupKnotRecyclerClickListeners(rvKnotList: RecyclerView) {
+        knotListAdapter.onKnotListClickListener = { knot, view ->
+            knotsDialog(knot, rvKnotList.getChildAdapterPosition(view))
         }
+        knotListAdapter.onKnotListLongClickListener = { knot ->
+            constructionViewModel.deleteKnotFromList(knot)
+            knotListAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun setupRodRecyclerClickListeners(rvRodList: RecyclerView) {
         rodListAdapter.onRodListClickListener = {
             rodsDialog(it)
         }

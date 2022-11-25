@@ -3,6 +3,7 @@ package ru.subnak.sapr.presentation.viewmodel
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -104,6 +105,11 @@ class ConstructionViewModel @Inject constructor(
         return _knotMutableList.last().x + _knotMutableList.size * 500
     }
 
+    fun deleteKnotFromList(knot: Knot) {
+        _knotMutableList.remove(knot)
+        _knotList.value = _knotMutableList
+    }
+
     fun checkPropAndCountOfRods(): Int {
         var result = ERROR_TYPE_NULL
 
@@ -138,14 +144,15 @@ class ConstructionViewModel @Inject constructor(
         inputX: String?,
         inputLoadConcentrated: String?,
         inputProp: Boolean,
-        knotNumber: Int
+        knotIndex: Int
     ): Boolean {
         val x = parseInt(inputX)
         val loadConcentrated = parseInt(inputLoadConcentrated)
-        val validFields = validateInputEditKnot(x, knotNumber)
+        val validFields = validateInputEditKnot(x, knotIndex)
         if (validFields) {
-            val knot = Knot(x, loadConcentrated, inputProp, knotNumber)
-            _knotMutableList[knotNumber - 1] = knot
+            Log.d("kke", knotIndex.toString())
+            val knot = Knot(x, loadConcentrated, inputProp, knotIndex+1)
+            _knotMutableList[knotIndex] = knot
             _knotList.value = _knotMutableList
             return true
         }
@@ -224,16 +231,16 @@ class ConstructionViewModel @Inject constructor(
         return result
     }
 
-    private fun validateInputEditKnot(x: Int, knotNumber: Int): Boolean {
+    private fun validateInputEditKnot(x: Int, knotIndex: Int): Boolean {
         var result = true
-        _knotMutableList.forEach {
-            if (knotNumber > it.knotNumber) {
-                if (x <= it.x) {
+        _knotMutableList.forEachIndexed { index, knot ->
+            if (knotIndex > index) {
+                if (x <= knot.x) {
                     result = false
                     _errorInputX.value = true
                 }
-            } else if (knotNumber < it.knotNumber) {
-                if (x > it.x) {
+            } else if (knotIndex < index) {
+                if (x > knot.x) {
                     result = false
                     _errorInputX.value = true
                 }
