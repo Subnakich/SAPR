@@ -47,11 +47,29 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_rod_tension"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_rod_apply"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_rod_load_running">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_rod_tension"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/dialog_rod_tension"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_rod_load_running"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/til_rod_voltage"
+        app:layout_constraintBottom_toTopOf="@+id/til_rod_tension"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_rod_elastic_module">
@@ -64,24 +82,6 @@
             android:inputType="numberDecimal|numberSigned" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_rod_voltage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_rod_apply"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_rod_load_running">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_rod_voltage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/dialog_rod_voltage"
-            android:inputType="numberDecimal" />
-    </com.google.android.material.textfield.TextInputLayout>
-
 
     <Button
         android:id="@+id/button_rod_apply"
@@ -92,6 +92,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_rod_voltage" />
+        app:layout_constraintTop_toBottomOf="@+id/til_rod_tension" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,8 @@ import ru.subnak.sapr.databinding.CardviewRodBinding
 import ru.subnak.sapr.domain.model.Rod
 import ru.subnak.sapr.presentation.callback.RodCallback
 import ru.subnak.sapr.presentation.viewholder.RodViewHolder
+import java.math.MathContext
+import java.math.RoundingMode
 
 class RodListAdapter : ListAdapter<Rod, RodViewHolder>(RodCallback()) {
 
@@ -28,10 +30,10 @@ class RodListAdapter : ListAdapter<Rod, RodViewHolder>(RodCallback()) {
     override fun onBindViewHolder(holder: RodViewHolder, position: Int) {
         val rod = getItem(position)
         holder.binding.tvRodTitle.text = posToString(rod.rodId + 1, holder.itemView.context)
-        holder.binding.tvRodSquare.text = rod.square.toString()
-        holder.binding.tvRodVoltage.text = rod.voltage.toString()
-        holder.binding.tvLoadRunning.text = rod.loadRunning.toString()
-        holder.binding.tvRodElasticModule.text = rod.elasticModule.toString()
+        holder.binding.tvRodSquare.text = trimToEngineeringString(rod.square)
+        holder.binding.tvRodTension.text = trimToEngineeringString(rod.tension)
+        holder.binding.tvLoadRunning.text = trimToEngineeringString(rod.loadRunning)
+        holder.binding.tvRodElasticModule.text = trimToEngineeringString(rod.elasticModule)
         holder.itemView.setOnLongClickListener {
             onRodListLongClickListener?.invoke(rod, it)
             true
@@ -39,6 +41,12 @@ class RodListAdapter : ListAdapter<Rod, RodViewHolder>(RodCallback()) {
         holder.itemView.setOnClickListener {
             onRodListClickListener?.invoke(rod, it)
         }
+    }
+
+    private fun trimToEngineeringString(double: Double): String {
+        return double
+            .toBigDecimal(MathContext(3, RoundingMode.HALF_UP))
+            .toEngineeringString()
     }
 
     private fun posToString(position: Int, context: Context): String {

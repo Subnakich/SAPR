@@ -48,9 +48,9 @@ class ConstructionViewModel @Inject constructor(
     val errorInputElasticModule: LiveData<Boolean>
         get() = _errorInputElasticModule
 
-    private val _errorInputVoltage = MutableLiveData<Boolean>()
-    val errorInputVoltage: LiveData<Boolean>
-        get() = _errorInputVoltage
+    private val _errorInputTension = MutableLiveData<Boolean>()
+    val errorInputTension: LiveData<Boolean>
+        get() = _errorInputTension
 
     fun addConstruction() {
         viewModelScope.launch {
@@ -309,7 +309,7 @@ class ConstructionViewModel @Inject constructor(
         }
         if (voltage <= 0) {
             result = false
-            _errorInputVoltage.value = true
+            _errorInputTension.value = true
         }
         return result
     }
@@ -334,8 +334,8 @@ class ConstructionViewModel @Inject constructor(
         _errorInputElasticModule.value = false
     }
 
-    fun resetErrorInputVoltage() {
-        _errorInputVoltage.value = false
+    fun resetErrorInputTension() {
+        _errorInputTension.value = false
     }
 
     companion object {

@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Rod(
     val square: Double,
     val elasticModule: Double,
-    val voltage: Double,
+    val tension: Double,
     val loadRunning: Double,
     val rodId: Int,
     val constructionId: Int = UNDEFINED_ID

@@ -23,6 +23,6 @@ data class RodDbModel(
     var constructionId: Int,
     val square: Double,
     val elasticModule: Double,
-    val voltage: Double,
+    val tension: Double,
     val loadRunning: Double
 )

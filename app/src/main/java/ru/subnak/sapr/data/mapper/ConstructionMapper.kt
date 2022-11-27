@@ -47,7 +47,7 @@ class ConstructionMapper @Inject constructor() {
     private fun mapRodEntityToDbModel(rod: Rod) = RodDbModel(
         square = rod.square,
         elasticModule = rod.elasticModule,
-        voltage = rod.voltage,
+        tension = rod.tension,
         loadRunning = rod.loadRunning,
         rodId = rod.rodId,
         constructionId = rod.constructionId
@@ -81,7 +81,7 @@ class ConstructionMapper @Inject constructor() {
     private fun mapRodDbModelToEntity(rod: RodDbModel) = Rod(
         square = rod.square,
         elasticModule = rod.elasticModule,
-        voltage = rod.voltage,
+        tension = rod.tension,
         loadRunning = rod.loadRunning,
         rodId = rod.rodId,
         constructionId = rod.constructionId

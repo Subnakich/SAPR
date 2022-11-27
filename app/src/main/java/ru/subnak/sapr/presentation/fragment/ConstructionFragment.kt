@@ -180,14 +180,14 @@ class ConstructionFragment : Fragment() {
                 rodBinding.etRodSquare.setText(rod.square.toString())
                 rodBinding.etRodElasticModule.setText(rod.elasticModule.toString())
                 rodBinding.etRodLoadRunning.setText(rod.loadRunning.toString())
-                rodBinding.etRodVoltage.setText(rod.voltage.toString())
+                rodBinding.etRodTension.setText(rod.tension.toString())
 
                 rodBinding.buttonRodApply.setOnClickListener {
                     val closeDialog = constructionViewModel.editRod(
                         rodBinding.etRodSquare.text?.toString(),
                         rodBinding.etRodElasticModule.text?.toString(),
                         rodBinding.etRodLoadRunning.text?.toString(),
-                        rodBinding.etRodVoltage.text?.toString(),
+                        rodBinding.etRodTension.text?.toString(),
                         position
                     )
                     if (closeDialog) {
@@ -201,7 +201,7 @@ class ConstructionFragment : Fragment() {
                     rodBinding.etRodSquare.text?.toString(),
                     rodBinding.etRodElasticModule.text?.toString(),
                     rodBinding.etRodLoadRunning.text?.toString(),
-                    rodBinding.etRodVoltage.text?.toString()
+                    rodBinding.etRodTension.text?.toString()
                 )
                 if (closeDialog) {
                     alertDialog.dismiss()
@@ -212,7 +212,7 @@ class ConstructionFragment : Fragment() {
         alertDialog.setOnCancelListener {
             constructionViewModel.resetErrorInputSquare()
             constructionViewModel.resetErrorInputElasticModule()
-            constructionViewModel.resetErrorInputVoltage()
+            constructionViewModel.resetErrorInputTension()
         }
     }
 
@@ -233,13 +233,13 @@ class ConstructionFragment : Fragment() {
             }
             rodBinding.etRodElasticModule.error = message
         }
-        constructionViewModel.errorInputVoltage.observe(viewLifecycleOwner) {
+        constructionViewModel.errorInputTension.observe(viewLifecycleOwner) {
             val message = if (it) {
-                getString(R.string.dialog_rod_error_input_voltage)
+                getString(R.string.dialog_rod_error_input_tension)
             } else {
                 null
             }
-            rodBinding.etRodVoltage.error = message
+            rodBinding.etRodTension.error = message
         }
     }
 
@@ -270,13 +270,13 @@ class ConstructionFragment : Fragment() {
 
             }
         })
-        rodBinding.etRodVoltage.addTextChangedListener(object : TextWatcher {
+        rodBinding.etRodTension.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                constructionViewModel.resetErrorInputVoltage()
+                constructionViewModel.resetErrorInputTension()
             }
 
             override fun afterTextChanged(s: Editable?) {

@@ -36,17 +36,18 @@
 
     <!-- Rod card view -->
     <string name="rods_number">Rod №%s</string>
-    <string name="rod_cv_linear_load">Linear load</string>
-    <string name="rod_cv_permissible_voltage">Permissible voltage</string>
+    <string name="rod_cv_linear_load">Line distributed load</string>
+    <string name="rod_cv_permissible_tension">Permissible tension</string>
     <string name="rod_cv_elastic_modulus">Elastic modulus</string>
-    <string name="rod_cv_sectional_area">Sectional area</string>
+    <string name="rod_cv_sectional_area">Cross-sectional area</string>
 
-    <!-- Knot card view -->
+    <!-- Node card view -->
     <string name="nodes_number">Node №%s</string>
     <string name="node_cv_x_coordinate">X coordinate</string>
     <string name="node_cv_concentrated_load">Concentrated load</string>
     <string name="node_cv_support">Support</string>
-
+    <string name="node_cv_yes">Yes</string>
+    <string name="node_cv_no">No</string>
 
     <!-- Dialog add/edit node -->
     <string name="dialog_node_rigid_support">Rigid support</string>
@@ -58,12 +59,12 @@
     <!-- Dialog add/edit rod -->
     <string name="dialog_rod_square">Enter the cross-sectional area</string>
     <string name="dialog_rod_elastic_module">Enter the modulus of elasticity</string>
-    <string name="dialog_rod_load_running">Enter the linear load</string>
-    <string name="dialog_rod_voltage">Enter the allowable voltage</string>
+    <string name="dialog_rod_load_running">Enter the line distributed load</string>
+    <string name="dialog_rod_tension">Enter the allowable tension</string>
     <string name="dialog_rod_btn_apply">Apply</string>
     <string name="dialog_rod_error_input_square">Invalid cross-sectional area</string>
     <string name="dialog_rod_error_input_elastic_module">Invalid modulus of elasticity</string>
-    <string name="dialog_rod_error_input_voltage">Invalid allowable voltage</string>
+    <string name="dialog_rod_error_input_tension">Invalid allowable tension</string>
 
     <!-- Dialog mainFragment choose action -->
     <string name="dialog_construction_open">Open</string>

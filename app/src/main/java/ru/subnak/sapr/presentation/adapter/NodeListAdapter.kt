@@ -10,6 +10,9 @@ import ru.subnak.sapr.databinding.CardviewNodeBinding
 import ru.subnak.sapr.domain.model.Node
 import ru.subnak.sapr.presentation.callback.NodeCallback
 import ru.subnak.sapr.presentation.viewholder.NodeViewHolder
+import java.math.MathContext
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class NodeListAdapter : ListAdapter<Node, NodeViewHolder>(NodeCallback()) {
 
@@ -28,9 +31,9 @@ class NodeListAdapter : ListAdapter<Node, NodeViewHolder>(NodeCallback()) {
     override fun onBindViewHolder(holder: NodeViewHolder, position: Int) {
         val node = getItem(position)
         holder.binding.tvNodeTitle.text = posToString(node.nodeId + 1, holder.itemView.context)
-        holder.binding.tvNodeCoordX.text = node.x.toString()
-        holder.binding.tvNodeProp.text = node.prop.toString()
-        holder.binding.tvNodeLoadConcentrated.text = node.loadConcentrated.toString()
+        holder.binding.tvNodeCoordX.text = trimToEngineeringString(node.x)
+        holder.binding.tvNodeProp.text = propYesOrNo(node.prop, holder.itemView.context)
+        holder.binding.tvNodeLoadConcentrated.text = trimToEngineeringString(node.loadConcentrated)
         holder.itemView.setOnLongClickListener {
             onNodeListLongClickListener?.invoke(node, it)
             true
@@ -38,6 +41,20 @@ class NodeListAdapter : ListAdapter<Node, NodeViewHolder>(NodeCallback()) {
         holder.itemView.setOnClickListener {
             onNodeListClickListener?.invoke(node, it)
         }
+    }
+
+    private fun propYesOrNo(prop: Boolean, context: Context): String {
+        return if (prop) {
+            context.getString(R.string.node_cv_yes)
+        } else {
+            context.getString(R.string.node_cv_no)
+        }
+    }
+
+    private fun trimToEngineeringString(double: Double): String {
+        return double
+            .toBigDecimal(MathContext(3,RoundingMode.HALF_UP))
+            .toEngineeringString()
     }
 
     private fun posToString(position: Int, context: Context): String {
