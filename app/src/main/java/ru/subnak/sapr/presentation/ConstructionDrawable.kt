@@ -17,15 +17,14 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
 
         for ((i, value) in construction.nodeValues.withIndex()) {
             var absoluteX = 10
-            val x = if (construction.nodeValues[value.nodeId].x == 0) {
+            val x = if (construction.nodeValues[value.nodeId].x == 0.0) {
                 absoluteX *= 5
-                (construction.nodeValues[value.nodeId].x + 1) * absoluteX
+                ((construction.nodeValues[value.nodeId].x + 1) * absoluteX).toInt()
 
             } else {
                 absoluteX *= 5
-                construction.nodeValues[value.nodeId].x * absoluteX
+                (construction.nodeValues[value.nodeId].x * absoluteX).toInt()
             }
-
 
 
             if (value.nodeId + 1 < construction.nodeValues.size) {
@@ -39,18 +38,18 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
             }
 
             if (value.nodeId + 1 <= construction.rodValues.size) {
-                val x1 = construction.nodeValues[value.nodeId + 1].x * absoluteX
+                val x1 = (construction.nodeValues[value.nodeId + 1].x * absoluteX).toInt()
                 val square = construction.rodValues[value.nodeId].square
                 val loadRunning = construction.rodValues[value.nodeId].loadRunning
-                drawRod(canvas, x, x1, (square + 10) * 10)
-                if (loadRunning != 0) {
-                    drawRunningLoad(canvas, x, x1, loadRunning)
+                drawRod(canvas, x, x1, (square.toInt() + 10) * 10)
+                if (loadRunning.toInt() != 0) {
+                    drawRunningLoad(canvas, x, x1, loadRunning.toInt())
                 }
                 Log.d("kek", loadRunning.toString())
             }
 
             val loadConcentrated = construction.nodeValues[value.nodeId].loadConcentrated
-            drawConcentratedLoad(canvas, x, loadConcentrated)
+            drawConcentratedLoad(canvas, x, loadConcentrated.toInt())
 
 
         }
