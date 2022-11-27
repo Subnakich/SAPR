@@ -57,14 +57,14 @@ class ConstructionViewModel @Inject constructor(
         viewModelScope.launch {
             val construction = Construction(
                 System.currentTimeMillis(),
-                _knotMutableList,
-                _rodMutableList,
+                _knotMutableList.toList(),
+                _rodMutableList.toList(),
             )
             val bitmap = createBitmapForSave(construction)
             val constructionForSave = Construction(
                 System.currentTimeMillis(),
-                _knotMutableList,
-                _rodMutableList,
+                _knotMutableList.toList(),
+                _rodMutableList.toList(),
                 bitmap
             )
             addConstructionUseCase.invoke(constructionForSave)
@@ -75,10 +75,10 @@ class ConstructionViewModel @Inject constructor(
         viewModelScope.launch {
             val construction = getConstructionUseCase.invoke(constructionId)
             _construction.value = construction
-            _rodMutableList.addAll(construction.rodValues)
-            _knotMutableList.addAll(construction.knotValues)
-            _rodList.value = construction.rodValues
-            _knotList.value = construction.knotValues
+            _rodMutableList.addAll(construction.rodValues.toList())
+            _knotMutableList.addAll(construction.knotValues.toList())
+            _rodList.value = construction.rodValues.toList()
+            _knotList.value = construction.knotValues.toList()
         }
     }
 
@@ -107,7 +107,7 @@ class ConstructionViewModel @Inject constructor(
 
     fun deleteKnotFromList(knot: Knot) {
         _knotMutableList.remove(knot)
-        _knotList.value = _knotMutableList
+        _knotList.value = _knotMutableList.toList()
     }
 
     fun checkPropAndCountOfRods(): Int {

@@ -28,7 +28,7 @@ class KnotListAdapter : ListAdapter<Knot, KnotViewHolder>(KnotCallback()) {
 
     override fun onBindViewHolder(holder: KnotViewHolder, position: Int) {
         val knot = getItem(position)
-        holder.binding.tvKnotTitle.text = posToString(position, holder.itemView.context)
+        //holder.binding.tvKnotTitle.text = posToString(holder.adapterPosition, holder.itemView.context)
         holder.binding.tvKnotCoordX.text = knot.x.toString()
         holder.binding.tvKnotProp.text = knot.prop.toString()
         holder.binding.tvKnotLoadConcentrated.text = knot.loadConcentrated.toString()

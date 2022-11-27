@@ -334,7 +334,6 @@ class ConstructionFragment : Fragment() {
         }
         knotListAdapter.onKnotListLongClickListener = { knot ->
             constructionViewModel.deleteKnotFromList(knot)
-            knotListAdapter.notifyDataSetChanged()
         }
     }
 
