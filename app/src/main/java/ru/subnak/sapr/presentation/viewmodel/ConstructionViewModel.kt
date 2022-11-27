@@ -293,7 +293,6 @@ class ConstructionViewModel @Inject constructor(
         return result
     }
 
-
     private fun validateInputRod(
         square: Double,
         elasticModule: Double,

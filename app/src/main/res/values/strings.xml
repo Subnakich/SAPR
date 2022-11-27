@@ -54,7 +54,6 @@
     <string name="dialog_node_load_concentrated">Enter a concentrated load</string>
     <string name="dialog_node_btn_apply">Apply</string>
     <string name="dialog_node_error_input_x">Invalid X coordinate</string>
-    <string name="dialog_node_error_input_load_concentrated">Invalid concentrated load</string>
 
     <!-- Dialog add/edit rod -->
     <string name="dialog_rod_square">Enter the cross-sectional area</string>
@@ -64,7 +63,6 @@
     <string name="dialog_rod_btn_apply">Apply</string>
     <string name="dialog_rod_error_input_square">Invalid cross-sectional area</string>
     <string name="dialog_rod_error_input_elastic_module">Invalid modulus of elasticity</string>
-    <string name="dialog_rod_error_input_load_running">Invalid linear load</string>
     <string name="dialog_rod_error_input_voltage">Invalid allowable voltage</string>
 
     <!-- Dialog mainFragment choose action -->

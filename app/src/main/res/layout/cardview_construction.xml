@@ -22,8 +22,6 @@
             android:layout_height="110dp"
             android:contentDescription="@string/rod_image"
             android:scaleType="centerInside"
-            android:src="@drawable/_____1_"
-            tools:srcCompat="@drawable/_____1_"
             android:paddingTop="8dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp" />
