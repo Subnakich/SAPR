@@ -4,12 +4,11 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Knot(
-    val x: Int,
-    val loadConcentrated: Int,
+data class Node(
+    val x: Double,
+    val loadConcentrated: Double,
     val prop: Boolean,
-    val knotNumber: Int,
-    val knotId: Int = UNDEFINED_ID,
+    val nodeId: Int,
     val constructionId: Int = UNDEFINED_ID
 ) : Parcelable {
 

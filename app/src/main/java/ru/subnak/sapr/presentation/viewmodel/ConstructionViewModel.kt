@@ -2,17 +2,16 @@ package ru.subnak.sapr.presentation.viewmodel
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.subnak.sapr.domain.model.Construction
-import ru.subnak.sapr.domain.model.Knot
+import ru.subnak.sapr.domain.model.Node
 import ru.subnak.sapr.domain.model.Rod
 import ru.subnak.sapr.domain.usecase.AddConstructionUseCase
+import ru.subnak.sapr.domain.usecase.EditConstructionUseCase
 import ru.subnak.sapr.domain.usecase.GetConstructionUseCase
 import ru.subnak.sapr.presentation.ConstructionDrawable
 import javax.inject.Inject
@@ -20,6 +19,7 @@ import javax.inject.Inject
 class ConstructionViewModel @Inject constructor(
     private val addConstructionUseCase: AddConstructionUseCase,
     private val getConstructionUseCase: GetConstructionUseCase,
+    private val editConstructionUseCase: EditConstructionUseCase
 ) : ViewModel() {
 
     private val _construction = MutableLiveData<Construction>()
@@ -31,12 +31,11 @@ class ConstructionViewModel @Inject constructor(
     val rodList: LiveData<List<Rod>>
         get() = _rodList
 
-    private val _knotMutableList = mutableListOf<Knot>()
-    private val _knotList = MutableLiveData<List<Knot>>()
-    val knotList: LiveData<List<Knot>>
-        get() = _knotList
+    private val _nodeMutableList = mutableListOf<Node>()
+    private val _nodeList = MutableLiveData<List<Node>>()
+    val nodeList: LiveData<List<Node>>
+        get() = _nodeList
 
-    // Input errors
     private val _errorInputX = MutableLiveData<Boolean>()
     val errorInputX: LiveData<Boolean>
         get() = _errorInputX
@@ -57,17 +56,36 @@ class ConstructionViewModel @Inject constructor(
         viewModelScope.launch {
             val construction = Construction(
                 System.currentTimeMillis(),
-                _knotMutableList.toList(),
-                _rodMutableList.toList(),
+                _nodeMutableList,
+                _rodMutableList
             )
-            val bitmap = createBitmapForSave(construction)
+            val bitmap = getBitmap(construction)
             val constructionForSave = Construction(
                 System.currentTimeMillis(),
-                _knotMutableList.toList(),
-                _rodMutableList.toList(),
+                _nodeMutableList,
+                _rodMutableList,
                 bitmap
             )
             addConstructionUseCase.invoke(constructionForSave)
+        }
+    }
+
+    fun editConstruction() {
+        viewModelScope.launch {
+            _construction.value?.let {
+                val construction = it.copy(
+                    nodeValues = _nodeMutableList.toList(),
+                    rodValues = _rodMutableList.toList()
+                )
+                val bitmap = getBitmap(construction)
+                val constructionForSave = it.copy(
+                    nodeValues = _nodeMutableList.toList(),
+                    rodValues = _rodMutableList.toList(),
+                    img = bitmap
+                )
+                editConstructionUseCase.invoke(constructionForSave)
+            }
+
         }
     }
 
@@ -76,18 +94,14 @@ class ConstructionViewModel @Inject constructor(
             val construction = getConstructionUseCase.invoke(constructionId)
             _construction.value = construction
             _rodMutableList.addAll(construction.rodValues.toList())
-            _knotMutableList.addAll(construction.knotValues.toList())
+            _nodeMutableList.addAll(construction.nodeValues.toList())
             _rodList.value = construction.rodValues.toList()
-            _knotList.value = construction.knotValues.toList()
+            _nodeList.value = construction.nodeValues.toList()
         }
     }
 
-    private fun createBitmapForSave(construction: Construction): Bitmap? {
-        val myDrawing = ConstructionDrawable(construction)
-        return createBitmap(myDrawing)
-    }
-
-    private fun createBitmap(drawable: Drawable): Bitmap? {
+    private fun getBitmap(construction: Construction): Bitmap? {
+        val drawable = ConstructionDrawable(construction)
 
         val bitmap = Bitmap.createBitmap(
             getConstructionImageWidth(),
@@ -102,19 +116,14 @@ class ConstructionViewModel @Inject constructor(
     }
 
     private fun getConstructionImageWidth(): Int {
-        return _knotMutableList.last().x + _knotMutableList.size * 500
-    }
-
-    fun deleteKnotFromList(knot: Knot) {
-        _knotMutableList.remove(knot)
-        _knotList.value = _knotMutableList.toList()
+        return _nodeMutableList.last().x.toInt() + _nodeMutableList.size * 200
     }
 
     fun checkPropAndCountOfRods(): Int {
         var result = ERROR_TYPE_NULL
 
-        if (_knotMutableList.size - _rodMutableList.size == 1) {
-            _knotMutableList.forEach {
+        if (_nodeMutableList.size - _rodMutableList.size == 1) {
+            _nodeMutableList.forEach {
                 if (it.prop) {
                     return ERROR_TYPE_NULL
                 } else {
@@ -127,36 +136,61 @@ class ConstructionViewModel @Inject constructor(
         return result
     }
 
-    fun addKnot(inputX: String?, inputLoadConcentrated: String?, inputProp: Boolean): Boolean {
-        val x = parseInt(inputX)
-        val loadConcentrated = parseInt(inputLoadConcentrated)
-        val validFields = validateInputAddKnot(x)
+
+    fun addNode(
+        inputX: String?,
+        inputLoadConcentrated: String?,
+        inputProp: Boolean
+    ): Boolean {
+        val x = parseDouble(inputX)
+        val loadConcentrated = parseDouble(inputLoadConcentrated)
+        val validFields = validateInputAddNode(x)
         if (validFields) {
-            val knot = Knot(x, loadConcentrated, inputProp, _knotMutableList.size + 1)
-            _knotMutableList.add(knot)
-            _knotList.value = _knotMutableList
+            val node = Node(
+                x,
+                loadConcentrated,
+                inputProp,
+                _nodeMutableList.size
+            )
+            _nodeMutableList.add(node)
+            _nodeList.value = _nodeMutableList.toList()
             return true
         }
         return false
     }
 
-    fun editKnot(
+    fun editNode(
         inputX: String?,
         inputLoadConcentrated: String?,
         inputProp: Boolean,
-        knotIndex: Int
+        nodeIndex: Int
     ): Boolean {
-        val x = parseInt(inputX)
-        val loadConcentrated = parseInt(inputLoadConcentrated)
-        val validFields = validateInputEditKnot(x, knotIndex)
+        val x = parseDouble(inputX)
+        val loadConcentrated = parseDouble(inputLoadConcentrated)
+        val validFields = validateInputEditNode(x, nodeIndex)
         if (validFields) {
-            Log.d("kke", knotIndex.toString())
-            val knot = Knot(x, loadConcentrated, inputProp, knotIndex+1)
-            _knotMutableList[knotIndex] = knot
-            _knotList.value = _knotMutableList
+            val node = Node(x, loadConcentrated, inputProp, nodeIndex)
+            _nodeMutableList[nodeIndex] = node
+            _nodeList.value = _nodeMutableList.toList()
             return true
         }
         return false
+    }
+
+    fun deleteNode(node: Node, nodeIndex: Int) {
+        _nodeMutableList.remove(node)
+        _nodeMutableList.forEachIndexed { index, item ->
+            if (index >= nodeIndex) {
+                _nodeMutableList[index] = item.copy(nodeId = index)
+            }
+        }
+        if (_rodMutableList.isNotEmpty()) {
+            if (_rodMutableList.size >= _nodeMutableList.size) {
+                _rodMutableList.removeLast()
+                _rodList.value = _rodMutableList.toList()
+            }
+        }
+        _nodeList.value = _nodeMutableList.toList()
     }
 
     fun addRod(
@@ -165,10 +199,10 @@ class ConstructionViewModel @Inject constructor(
         inputLoadRunning: String?,
         inputVoltage: String?
     ): Boolean {
-        val square = parseInt(inputSquare)
-        val elasticModule = parseInt(inputElasticModule)
-        val loadRunning = parseInt(inputLoadRunning)
-        val voltage = parseInt(inputVoltage)
+        val square = parseDouble(inputSquare)
+        val elasticModule = parseDouble(inputElasticModule)
+        val loadRunning = parseDouble(inputLoadRunning)
+        val voltage = parseDouble(inputVoltage)
         val validFields = validateInputRod(square, elasticModule, voltage)
         if (validFields) {
             val rod = Rod(
@@ -176,10 +210,10 @@ class ConstructionViewModel @Inject constructor(
                 elasticModule,
                 voltage,
                 loadRunning,
-                _rodMutableList.size + 1
+                _rodMutableList.size
             )
             _rodMutableList.add(rod)
-            _rodList.value = _rodMutableList
+            _rodList.value = _rodMutableList.toList()
             return true
         }
         return false
@@ -190,12 +224,12 @@ class ConstructionViewModel @Inject constructor(
         inputElasticModule: String?,
         inputLoadRunning: String?,
         inputVoltage: String?,
-        rodNumber: Int
+        rodIndex: Int
     ): Boolean {
-        val square = parseInt(inputSquare)
-        val elasticModule = parseInt(inputElasticModule)
-        val loadRunning = parseInt(inputLoadRunning)
-        val voltage = parseInt(inputVoltage)
+        val square = parseDouble(inputSquare)
+        val elasticModule = parseDouble(inputElasticModule)
+        val loadRunning = parseDouble(inputLoadRunning)
+        val voltage = parseDouble(inputVoltage)
         val validFields = validateInputRod(square, elasticModule, voltage)
         if (validFields) {
             val rod = Rod(
@@ -203,27 +237,37 @@ class ConstructionViewModel @Inject constructor(
                 elasticModule,
                 voltage,
                 loadRunning,
-                rodNumber
+                rodIndex
             )
-            _rodMutableList[rodNumber - 1] = rod
-            _rodList.value = _rodMutableList
+            _rodMutableList[rodIndex] = rod
+            _rodList.value = _rodMutableList.toList()
             return true
         }
         return false
     }
 
-    private fun parseInt(s: String?): Int {
+    fun deleteRod(rod: Rod, rodIndex: Int) {
+        _rodMutableList.remove(rod)
+        _rodMutableList.forEachIndexed { index, item ->
+            if (index >= rodIndex) {
+                _rodMutableList[index] = item.copy(rodId = index)
+            }
+        }
+        _rodList.value = _rodMutableList.toList()
+    }
+
+    private fun parseDouble(s: String?): Double {
         return try {
-            s?.trim()?.toInt() ?: 0
+            s?.trim()?.toDouble() ?: 0.0
         } catch (e: Exception) {
-            0
+            0.0
         }
     }
 
-    private fun validateInputAddKnot(x: Int): Boolean {
+    private fun validateInputAddNode(x: Double): Boolean {
         var result = true
-        if (_knotMutableList.isNotEmpty()) {
-            if (x <= _knotMutableList.last().x) {
+        if (_nodeMutableList.isNotEmpty()) {
+            if (x <= _nodeMutableList.last().x) {
                 result = false
                 _errorInputX.value = true
             }
@@ -231,16 +275,16 @@ class ConstructionViewModel @Inject constructor(
         return result
     }
 
-    private fun validateInputEditKnot(x: Int, knotIndex: Int): Boolean {
+    private fun validateInputEditNode(x: Double, nodeIndex: Int): Boolean {
         var result = true
-        _knotMutableList.forEachIndexed { index, knot ->
-            if (knotIndex > index) {
-                if (x <= knot.x) {
+        _nodeMutableList.forEachIndexed { index, node ->
+            if (nodeIndex > index) {
+                if (x <= node.x) {
                     result = false
                     _errorInputX.value = true
                 }
-            } else if (knotIndex < index) {
-                if (x > knot.x) {
+            } else if (nodeIndex < index) {
+                if (x > node.x) {
                     result = false
                     _errorInputX.value = true
                 }
@@ -251,9 +295,9 @@ class ConstructionViewModel @Inject constructor(
 
 
     private fun validateInputRod(
-        square: Int,
-        elasticModule: Int,
-        voltage: Int
+        square: Double,
+        elasticModule: Double,
+        voltage: Double
     ): Boolean {
         var result = true
         if (square <= 0) {
@@ -271,8 +315,8 @@ class ConstructionViewModel @Inject constructor(
         return result
     }
 
-    fun getKnotListSize(): Int {
-        return _knotMutableList.size
+    fun getNodeListSize(): Int {
+        return _nodeMutableList.size
     }
 
     fun getRodListSize(): Int {

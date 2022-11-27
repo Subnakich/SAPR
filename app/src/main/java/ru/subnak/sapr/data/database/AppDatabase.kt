@@ -7,16 +7,16 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ru.subnak.sapr.data.database.dao.ConstructionDao
 import ru.subnak.sapr.data.database.entity.ConstructionDbModel
-import ru.subnak.sapr.data.database.entity.KnotDbModel
+import ru.subnak.sapr.data.database.entity.NodeDbModel
 import ru.subnak.sapr.data.database.entity.RodDbModel
 
 @Database(
     entities = [
         ConstructionDbModel::class,
         RodDbModel::class,
-        KnotDbModel::class
+        NodeDbModel::class
     ],
-    version = 2,
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

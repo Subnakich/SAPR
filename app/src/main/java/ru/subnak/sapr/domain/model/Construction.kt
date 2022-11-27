@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Construction(
     val date: Long,
-    val knotValues: List<Knot>,
+    val nodeValues: List<Node>,
     val rodValues: List<Rod>,
     val img: Bitmap? = null,
     val id: Int = UNDEFINED_ID

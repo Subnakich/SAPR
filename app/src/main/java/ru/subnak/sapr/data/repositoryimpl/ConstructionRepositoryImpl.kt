@@ -22,6 +22,10 @@ class ConstructionRepositoryImpl @Inject constructor(
         constructionDao.addConstruction(mapper.mapConstructionWithValuesEntityToDbModel(construction))
     }
 
+    override suspend fun editConstruction(construction: Construction) {
+        constructionDao.addConstruction(mapper.mapConstructionWithValuesEntityToDbModel(construction))
+    }
+
     override suspend fun deleteConstruction(construction: Construction) {
         constructionDao.deleteConstruction(construction.id)
     }

@@ -4,7 +4,7 @@ import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 
 @Entity(
-    tableName = "knot",
+    tableName = "node",
     foreignKeys = [
         ForeignKey(
             entity = ConstructionDbModel::class,
@@ -13,16 +13,15 @@ import androidx.room.ForeignKey.CASCADE
             onDelete = CASCADE
         )
     ],
+    primaryKeys = ["node_id", "construction_id"],
     indices = [Index("construction_id")]
 )
-data class KnotDbModel(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "knot_id")
-    val knotId: Int,
+data class NodeDbModel(
+    @ColumnInfo(name = "node_id")
+    val nodeId: Int,
     @ColumnInfo(name = "construction_id")
     var constructionId: Int,
-    val x: Int,
+    val x: Double,
     val prop: Boolean,
-    val loadConcentrated: Int,
-    val knotNumber: Int
+    val loadConcentrated: Double
 )

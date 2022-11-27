@@ -15,20 +15,20 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
 
     override fun draw(canvas: Canvas) {
 
-        for ((i, value) in construction.knotValues.withIndex()) {
+        for ((i, value) in construction.nodeValues.withIndex()) {
             var absoluteX = 10
-            val x = if (construction.knotValues[value.knotNumber - 1].x == 0) {
+            val x = if (construction.nodeValues[value.nodeId].x == 0) {
                 absoluteX *= 5
-                (construction.knotValues[value.knotNumber - 1].x + 1) * absoluteX
+                (construction.nodeValues[value.nodeId].x + 1) * absoluteX
 
             } else {
                 absoluteX *= 5
-                construction.knotValues[value.knotNumber - 1].x * absoluteX
+                construction.nodeValues[value.nodeId].x * absoluteX
             }
 
 
 
-            if (value.knotNumber < construction.knotValues.size) {
+            if (value.nodeId + 1 < construction.nodeValues.size) {
                 if (value.prop) {
                     drawLeftProp(canvas, x)
                 }
@@ -38,10 +38,10 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
                 }
             }
 
-            if (value.knotNumber <= construction.rodValues.size) {
-                val x1 = construction.knotValues[value.knotNumber].x * absoluteX
-                val square = construction.rodValues[value.knotNumber - 1].square
-                val loadRunning = construction.rodValues[value.knotNumber - 1].loadRunning
+            if (value.nodeId + 1 <= construction.rodValues.size) {
+                val x1 = construction.nodeValues[value.nodeId + 1].x * absoluteX
+                val square = construction.rodValues[value.nodeId].square
+                val loadRunning = construction.rodValues[value.nodeId].loadRunning
                 drawRod(canvas, x, x1, (square + 10) * 10)
                 if (loadRunning != 0) {
                     drawRunningLoad(canvas, x, x1, loadRunning)
@@ -49,7 +49,7 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
                 Log.d("kek", loadRunning.toString())
             }
 
-            val loadConcentrated = construction.knotValues[value.knotNumber - 1].loadConcentrated
+            val loadConcentrated = construction.nodeValues[value.nodeId].loadConcentrated
             drawConcentratedLoad(canvas, x, loadConcentrated)
 
 

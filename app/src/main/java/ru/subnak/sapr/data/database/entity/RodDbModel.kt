@@ -13,17 +13,16 @@ import androidx.room.ForeignKey.CASCADE
             onDelete = CASCADE
         )
     ],
+    primaryKeys = ["rod_id", "construction_id"],
     indices = [Index("construction_id")]
 )
 data class RodDbModel(
-    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "rod_id")
     val rodId: Int,
     @ColumnInfo(name = "construction_id")
     var constructionId: Int,
-    val square: Int,
-    val elasticModule: Int,
-    val voltage: Int,
-    val loadRunning: Int,
-    val rodNumber: Int
+    val square: Double,
+    val elasticModule: Double,
+    val voltage: Double,
+    val loadRunning: Double
 )

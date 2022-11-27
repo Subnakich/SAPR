@@ -5,12 +5,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Rod(
-    val square: Int,
-    val elasticModule: Int,
-    val voltage: Int,
-    val loadRunning: Int,
-    val rodNumber: Int,
-    val rodId: Int = UNDEFINED_ID,
+    val square: Double,
+    val elasticModule: Double,
+    val voltage: Double,
+    val loadRunning: Double,
+    val rodId: Int,
     val constructionId: Int = UNDEFINED_ID
 ) : Parcelable {
 

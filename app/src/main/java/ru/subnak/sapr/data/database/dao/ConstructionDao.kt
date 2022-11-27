@@ -3,7 +3,7 @@ package ru.subnak.sapr.data.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.subnak.sapr.data.database.entity.ConstructionDbModel
-import ru.subnak.sapr.data.database.entity.KnotDbModel
+import ru.subnak.sapr.data.database.entity.NodeDbModel
 import ru.subnak.sapr.data.database.entity.RodDbModel
 import ru.subnak.sapr.data.database.relation.ConstructionWithValuesDbModel
 
@@ -20,13 +20,13 @@ interface ConstructionDao {
     @Transaction
     suspend fun addConstruction(construction: ConstructionWithValuesDbModel) {
         val list = addConstruction(construction.constructionDbModel)
+        construction.nodeDbModels.forEach {
+            it.constructionId = list.toInt()
+        }
         construction.rodDbModels.forEach {
             it.constructionId = list.toInt()
         }
-        construction.knotDbModels.forEach {
-            it.constructionId = list.toInt()
-        }
-        addKnots(construction.knotDbModels)
+        addNodes(construction.nodeDbModels)
         addRods(construction.rodDbModels)
     }
 
@@ -37,7 +37,7 @@ interface ConstructionDao {
     suspend fun addRods(rods: List<RodDbModel>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addKnots(knots: List<KnotDbModel>)
+    suspend fun addNodes(knots: List<NodeDbModel>)
 
     @Query("SELECT * FROM construction")
     fun getConstructionList(): LiveData<List<ConstructionDbModel>>

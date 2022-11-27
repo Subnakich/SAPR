@@ -9,6 +9,8 @@ interface ConstructionRepository {
 
     suspend fun addConstruction(construction: Construction)
 
+    suspend fun editConstruction(construction: Construction)
+
     suspend fun deleteConstruction(construction: Construction)
 
     fun getConstructionList(): LiveData<List<Construction>>

@@ -1,11 +1,11 @@
 package ru.subnak.sapr.data.mapper
 
 import ru.subnak.sapr.data.database.entity.ConstructionDbModel
-import ru.subnak.sapr.data.database.entity.KnotDbModel
+import ru.subnak.sapr.data.database.entity.NodeDbModel
 import ru.subnak.sapr.data.database.entity.RodDbModel
 import ru.subnak.sapr.data.database.relation.ConstructionWithValuesDbModel
 import ru.subnak.sapr.domain.model.Construction
-import ru.subnak.sapr.domain.model.Knot
+import ru.subnak.sapr.domain.model.Node
 import ru.subnak.sapr.domain.model.Rod
 import javax.inject.Inject
 
@@ -17,11 +17,11 @@ class ConstructionMapper @Inject constructor() {
 
     private fun mapConstructionDbModelToEntity(construction: ConstructionDbModel): Construction {
         val emptyListRod: List<Rod> = emptyList()
-        val emptyListKnot: List<Knot> = emptyList()
+        val emptyListNode: List<Node> = emptyList()
         return Construction(
             id = construction.id,
             date = construction.date,
-            knotValues = emptyListKnot,
+            nodeValues = emptyListNode,
             rodValues = emptyListRod,
             img = construction.img,
         )
@@ -31,7 +31,7 @@ class ConstructionMapper @Inject constructor() {
         ConstructionWithValuesDbModel(
             mapConstructionEntityToDbModel(construction),
             mapListRodEntityToDbModel(construction.rodValues),
-            mapListKnotEntityToDbModel(construction.knotValues)
+            mapListNodeEntityToDbModel(construction.nodeValues)
         )
 
     private fun mapConstructionEntityToDbModel(construction: Construction) = ConstructionDbModel(
@@ -50,21 +50,19 @@ class ConstructionMapper @Inject constructor() {
         voltage = rod.voltage,
         loadRunning = rod.loadRunning,
         rodId = rod.rodId,
-        constructionId = rod.constructionId,
-        rodNumber = rod.rodNumber
+        constructionId = rod.constructionId
     )
 
-    private fun mapListKnotEntityToDbModel(list: List<Knot>) = list.map {
-        mapKnotEntityToDbModel(it)
+    private fun mapListNodeEntityToDbModel(list: List<Node>) = list.map {
+        mapNodeEntityToDbModel(it)
     }
 
-    private fun mapKnotEntityToDbModel(knot: Knot) = KnotDbModel(
-        x = knot.x,
-        loadConcentrated = knot.loadConcentrated,
-        prop = knot.prop,
-        knotId = knot.knotId,
-        constructionId = knot.constructionId,
-        knotNumber = knot.knotNumber
+    private fun mapNodeEntityToDbModel(node: Node) = NodeDbModel(
+        x = node.x,
+        loadConcentrated = node.loadConcentrated,
+        prop = node.prop,
+        nodeId = node.nodeId,
+        constructionId = node.constructionId
     )
 
     fun mapConstructionDbModelWithValuesToEntity(construction: ConstructionWithValuesDbModel) =
@@ -72,7 +70,7 @@ class ConstructionMapper @Inject constructor() {
             id = construction.constructionDbModel.id,
             date = construction.constructionDbModel.date,
             rodValues = mapListRodValueDbModelToEntity(construction.rodDbModels),
-            knotValues = mapListKnotValueDbModelToEntity(construction.knotDbModels),
+            nodeValues = mapListNodeValueDbModelToEntity(construction.nodeDbModels),
             img = construction.constructionDbModel.img,
         )
 
@@ -86,20 +84,18 @@ class ConstructionMapper @Inject constructor() {
         voltage = rod.voltage,
         loadRunning = rod.loadRunning,
         rodId = rod.rodId,
-        constructionId = rod.constructionId,
-        rodNumber = rod.rodNumber
+        constructionId = rod.constructionId
     )
 
-    private fun mapListKnotValueDbModelToEntity(list: List<KnotDbModel>) = list.map {
-        mapKnotDbModelToEntity(it)
+    private fun mapListNodeValueDbModelToEntity(list: List<NodeDbModel>) = list.map {
+        mapNodeDbModelToEntity(it)
     }
 
-    private fun mapKnotDbModelToEntity(knot: KnotDbModel) = Knot(
-        x = knot.x,
-        loadConcentrated = knot.loadConcentrated,
-        prop = knot.prop,
-        knotId = knot.knotId,
-        constructionId = knot.constructionId,
-        knotNumber = knot.knotNumber
+    private fun mapNodeDbModelToEntity(node: NodeDbModel) = Node(
+        x = node.x,
+        loadConcentrated = node.loadConcentrated,
+        prop = node.prop,
+        nodeId = node.nodeId,
+        constructionId = node.constructionId
     )
 }

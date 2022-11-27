@@ -10,62 +10,62 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_knot_coord_x"
+        android:id="@+id/til_node_coord_x"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/til_knot_load_concentrated"
+        app:layout_constraintBottom_toTopOf="@+id/til_node_load_concentrated"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_knot_coord_x"
+            android:id="@+id/et_node_coord_x"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/dialog_knot_x_coordinate"
+            android:hint="@string/dialog_node_x_coordinate"
             android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_knot_load_concentrated"
+        android:id="@+id/til_node_load_concentrated"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/cb_knot_prop"
+        app:layout_constraintBottom_toTopOf="@+id/cb_node_prop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_knot_coord_x">
+        app:layout_constraintTop_toBottomOf="@+id/til_node_coord_x">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_knot_load_concentrated"
+            android:id="@+id/et_node_load_concentrated"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/dialog_knot_load_concentrated"
+            android:hint="@string/dialog_node_load_concentrated"
             android:inputType="numberDecimal|numberSigned" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
-        android:id="@+id/cb_knot_prop"
+        android:id="@+id/cb_node_prop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:text="@string/dialog_knot_rigid_support"
+        android:text="@string/dialog_node_rigid_support"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/button_knot_apply"
-        app:layout_constraintTop_toBottomOf="@+id/til_knot_load_concentrated" />
+        app:layout_constraintBottom_toTopOf="@+id/button_node_apply"
+        app:layout_constraintTop_toBottomOf="@+id/til_node_load_concentrated" />
 
     <Button
-        android:id="@+id/button_knot_apply"
+        android:id="@+id/button_node_apply"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:text="@string/dialog_knot_btn_apply"
+        android:text="@string/dialog_node_btn_apply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cb_knot_prop" />
+        app:layout_constraintTop_toBottomOf="@+id/cb_node_prop" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

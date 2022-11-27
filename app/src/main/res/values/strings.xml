@@ -28,6 +28,8 @@
     <string name="toast_rod_to_many">Too many rods!</string>
     <string name="toast_need_support">There must be at least one support</string>
     <string name="toast_need_rods">Not enough rods in construction</string>
+    <string name="tv_no_nodes_in_this_construction">No nodes in this construction</string>
+    <string name="tv_no_rods_in_this_construction">No rods in this construction</string>
 
     <!-- CalculatingFragment -->
     <string name="calculating_fragment_construction_image">Construction image</string>
@@ -40,19 +42,19 @@
     <string name="rod_cv_sectional_area">Sectional area</string>
 
     <!-- Knot card view -->
-    <string name="knots_number">Node №%s</string>
-    <string name="knot_cv_x_coordinate">X coordinate</string>
-    <string name="knot_cv_concentrated_load">Concentrated load</string>
-    <string name="knot_cv_support">Support</string>
+    <string name="nodes_number">Node №%s</string>
+    <string name="node_cv_x_coordinate">X coordinate</string>
+    <string name="node_cv_concentrated_load">Concentrated load</string>
+    <string name="node_cv_support">Support</string>
 
 
-    <!-- Dialog add/edit knot -->
-    <string name="dialog_knot_rigid_support">Rigid support</string>
-    <string name="dialog_knot_x_coordinate">Enter the X coordinate</string>
-    <string name="dialog_knot_load_concentrated">Enter a concentrated load</string>
-    <string name="dialog_knot_btn_apply">Apply</string>
-    <string name="dialog_knot_error_input_x">Invalid X coordinate</string>
-    <string name="dialog_knot_error_input_load_concentrated">Invalid concentrated load</string>
+    <!-- Dialog add/edit node -->
+    <string name="dialog_node_rigid_support">Rigid support</string>
+    <string name="dialog_node_x_coordinate">Enter the X coordinate</string>
+    <string name="dialog_node_load_concentrated">Enter a concentrated load</string>
+    <string name="dialog_node_btn_apply">Apply</string>
+    <string name="dialog_node_error_input_x">Invalid X coordinate</string>
+    <string name="dialog_node_error_input_load_concentrated">Invalid concentrated load</string>
 
     <!-- Dialog add/edit rod -->
     <string name="dialog_rod_square">Enter the cross-sectional area</string>
@@ -79,6 +81,8 @@
     <string name="dialog_delete_message_construction">Delete this construction?</string>
     <string name="dialog_delete_ok">OK</string>
     <string name="dialog_delete_cancel">Cancel</string>
+
+
 
 
 </resources>
