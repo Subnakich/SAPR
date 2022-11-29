@@ -91,7 +91,7 @@ class MainFragment : Fragment() {
         }
         constructionListAdapter.onConstructionListLongClickListener = {
             AlertDialog.Builder(requireContext())
-                .setItems(R.array.dialog_construction_choose_action) { d, c ->
+                .setItems(R.array.dialog_choose_action_construction) { d, c ->
                     when (c) {
                         0 -> launchFragment(CalculatingFragment.newInstanceCalculating(it.id))
                         1 -> launchFragment(ConstructionFragment.newInstanceEditConstruction(it.id))
@@ -107,11 +107,11 @@ class MainFragment : Fragment() {
     private fun deleteDialog(construction: Construction) {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.dialog_delete_message_construction)
-            .setPositiveButton(R.string.ok) { d, _ ->
+            .setPositiveButton(R.string.yes) { d, _ ->
                 viewModel.deleteConstruction(construction)
                 d.dismiss()
             }
-            .setNegativeButton(R.string.dialog_delete_cancel) { d, _ ->
+            .setNegativeButton(R.string.dialog_cancel) { d, _ ->
                 d.dismiss()
             }
             .create()

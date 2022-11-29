@@ -66,23 +66,33 @@
     <string name="dialog_rod_error_input_elastic_module">Invalid modulus of elasticity</string>
     <string name="dialog_rod_error_input_tension">Invalid allowable tension</string>
 
-    <!-- Dialog mainFragment choose action -->
-    <string name="dialog_construction_open">Open</string>
-    <string name="dialog_construction_edit">Edit</string>
-    <string name="dialog_construction_delete">Delete</string>
-    <string-array name="dialog_construction_choose_action">
-        <item>@string/dialog_construction_open</item>
-        <item>@string/dialog_construction_edit</item>
-        <item>@string/dialog_construction_delete</item>
+    <!-- Dialog choose action -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_open">Open</string>
+    <string name="dialog_edit">Edit</string>
+    <string name="dialog_delete">Delete</string>
+    <string-array name="dialog_choose_action_construction">
+        <item>@string/dialog_open</item>
+        <item>@string/dialog_edit</item>
+        <item>@string/dialog_delete</item>
+    </string-array>
+    <string-array name="dialog_choose_action_edit_or_delete">
+        <item>@string/dialog_edit</item>
+        <item>@string/dialog_delete</item>
     </string-array>
 
     <!-- Dialog delete -->
     <string name="dialog_delete_message_construction">Delete this construction?</string>
-    <string name="dialog_delete_cancel">Cancel</string>
 
+    <!-- Node delete -->
+    <string name="dialog_delete_message_node">Delete this node?</string>
+
+    <!-- Rod delete -->
+    <string name="dialog_delete_message_rod">Delete this rod?</string>
 
 
     <string name="ok">OK</string>
+    <string name="yes">Yes</string>
 
 
 </resources>

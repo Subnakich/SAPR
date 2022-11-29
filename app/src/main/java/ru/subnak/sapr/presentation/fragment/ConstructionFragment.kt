@@ -37,7 +37,7 @@ class ConstructionFragment : Fragment() {
     private val binding: FragmentConstructionBinding
         get() = _binding ?: throw RuntimeException("FragmentConstructionBinding = null")
 
-    private lateinit var constructionViewModel: ConstructionViewModel
+    private lateinit var viewModel: ConstructionViewModel
 
     private lateinit var rodListAdapter: RodListAdapter
     private lateinit var nodeListAdapter: NodeListAdapter
@@ -69,7 +69,7 @@ class ConstructionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        constructionViewModel =
+        viewModel =
             ViewModelProvider(this, viewModelFactory)[ConstructionViewModel::class.java]
         setupRecyclerView()
         observeViewModel()
@@ -87,8 +87,8 @@ class ConstructionFragment : Fragment() {
             nodesDialog()
         }
         binding.btnAddRod.setOnClickListener {
-            val rodListSize = constructionViewModel.getRodListSize()
-            val nodeListSize = constructionViewModel.getNodeListSize()
+            val rodListSize = viewModel.getRodListSize()
+            val nodeListSize = viewModel.getNodeListSize()
             if (rodListSize < nodeListSize - 1) {
                 rodsDialog()
             } else {
@@ -112,7 +112,7 @@ class ConstructionFragment : Fragment() {
                 nodeBinding.cbNodeProp.isChecked = node.prop
 
                 nodeBinding.buttonNodeApply.setOnClickListener {
-                    val closeDialog = constructionViewModel.editNode(
+                    val closeDialog = viewModel.editNode(
                         nodeBinding.etNodeCoordX.text?.toString(),
                         nodeBinding.etNodeLoadConcentrated.text?.toString(),
                         nodeBinding.cbNodeProp.isChecked,
@@ -125,7 +125,7 @@ class ConstructionFragment : Fragment() {
             }
         } else {
             nodeBinding.buttonNodeApply.setOnClickListener {
-                val closeDialog = constructionViewModel.addNode(
+                val closeDialog = viewModel.addNode(
                     nodeBinding.etNodeCoordX.text?.toString(),
                     nodeBinding.etNodeLoadConcentrated.text?.toString(),
                     nodeBinding.cbNodeProp.isChecked
@@ -137,12 +137,12 @@ class ConstructionFragment : Fragment() {
         }
         alertDialog.show()
         alertDialog.setOnCancelListener {
-            constructionViewModel.resetErrorInputX()
+            viewModel.resetErrorInputX()
         }
     }
 
     private fun observeViewModelForNodeDialog(nodeBinding: DialogNodeBinding) {
-        constructionViewModel.errorInputX.observe(viewLifecycleOwner) {
+        viewModel.errorInputX.observe(viewLifecycleOwner) {
             val message = if (it) {
                 getString(R.string.dialog_node_error_input_x)
             } else {
@@ -159,7 +159,7 @@ class ConstructionFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                constructionViewModel.resetErrorInputX()
+                viewModel.resetErrorInputX()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -182,7 +182,7 @@ class ConstructionFragment : Fragment() {
                 rodBinding.etRodTension.setText(rod.tension.toString())
 
                 rodBinding.buttonRodApply.setOnClickListener {
-                    val closeDialog = constructionViewModel.editRod(
+                    val closeDialog = viewModel.editRod(
                         rodBinding.etRodSquare.text?.toString(),
                         rodBinding.etRodElasticModule.text?.toString(),
                         rodBinding.etRodLoadRunning.text?.toString(),
@@ -196,7 +196,7 @@ class ConstructionFragment : Fragment() {
             }
         } else {
             rodBinding.buttonRodApply.setOnClickListener {
-                val closeDialog = constructionViewModel.addRod(
+                val closeDialog = viewModel.addRod(
                     rodBinding.etRodSquare.text?.toString(),
                     rodBinding.etRodElasticModule.text?.toString(),
                     rodBinding.etRodLoadRunning.text?.toString(),
@@ -209,14 +209,14 @@ class ConstructionFragment : Fragment() {
         }
         alertDialog.show()
         alertDialog.setOnCancelListener {
-            constructionViewModel.resetErrorInputSquare()
-            constructionViewModel.resetErrorInputElasticModule()
-            constructionViewModel.resetErrorInputTension()
+            viewModel.resetErrorInputSquare()
+            viewModel.resetErrorInputElasticModule()
+            viewModel.resetErrorInputTension()
         }
     }
 
     private fun observeViewModelForRodDialog(rodBinding: DialogRodBinding) {
-        constructionViewModel.errorInputSquare.observe(viewLifecycleOwner) {
+        viewModel.errorInputSquare.observe(viewLifecycleOwner) {
             val message = if (it) {
                 getString(R.string.dialog_rod_error_input_square)
             } else {
@@ -224,7 +224,7 @@ class ConstructionFragment : Fragment() {
             }
             rodBinding.etRodSquare.error = message
         }
-        constructionViewModel.errorInputElasticModule.observe(viewLifecycleOwner) {
+        viewModel.errorInputElasticModule.observe(viewLifecycleOwner) {
             val message = if (it) {
                 getString(R.string.dialog_rod_error_input_elastic_module)
             } else {
@@ -232,7 +232,7 @@ class ConstructionFragment : Fragment() {
             }
             rodBinding.etRodElasticModule.error = message
         }
-        constructionViewModel.errorInputTension.observe(viewLifecycleOwner) {
+        viewModel.errorInputTension.observe(viewLifecycleOwner) {
             val message = if (it) {
                 getString(R.string.dialog_rod_error_input_tension)
             } else {
@@ -249,7 +249,7 @@ class ConstructionFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                constructionViewModel.resetErrorInputSquare()
+                viewModel.resetErrorInputSquare()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -262,7 +262,7 @@ class ConstructionFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                constructionViewModel.resetErrorInputElasticModule()
+                viewModel.resetErrorInputElasticModule()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -275,7 +275,7 @@ class ConstructionFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                constructionViewModel.resetErrorInputTension()
+                viewModel.resetErrorInputTension()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -316,7 +316,17 @@ class ConstructionFragment : Fragment() {
         }
         nodeListAdapter.onNodeListLongClickListener = { node, view ->
             val position = rvNodeList.getChildAdapterPosition(view)
-            constructionViewModel.deleteNode(node, position)
+            AlertDialog.Builder(requireContext())
+                .setItems(R.array.dialog_choose_action_edit_or_delete) { d, c ->
+                    when (c) {
+                        0 -> nodesDialog(node, position)
+                        1 -> deleteNodeDialog(node, position)
+                    }
+                    d.dismiss()
+                }
+                .create()
+                .show()
+
         }
     }
 
@@ -327,12 +337,50 @@ class ConstructionFragment : Fragment() {
         }
         rodListAdapter.onRodListLongClickListener = { rod, view ->
             val position = rvRodList.getChildAdapterPosition(view)
-            constructionViewModel.deleteRod(rod, position)
+            AlertDialog.Builder(requireContext())
+                .setItems(R.array.dialog_choose_action_edit_or_delete) { d, c ->
+                    when (c) {
+                        0 -> rodsDialog(rod, position)
+                        1 -> deleteRodDialog(rod, position)
+                    }
+                    d.dismiss()
+                }
+                .create()
+                .show()
+
         }
     }
 
+    private fun deleteNodeDialog(node: Node, position: Int) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.dialog_delete_message_node)
+            .setPositiveButton(R.string.yes) { d, _ ->
+                viewModel.deleteNode(node, position)
+                d.dismiss()
+            }
+            .setNegativeButton(R.string.dialog_cancel) { d, _ ->
+                d.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun deleteRodDialog(rod: Rod, position: Int) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.dialog_delete_message_construction)
+            .setPositiveButton(R.string.yes) { d, _ ->
+                viewModel.deleteRod(rod, position)
+                d.dismiss()
+            }
+            .setNegativeButton(R.string.dialog_cancel) { d, _ ->
+                d.dismiss()
+            }
+            .create()
+            .show()
+    }
+
     private fun observeViewModel() {
-        constructionViewModel.nodeList.observe(viewLifecycleOwner) {
+        viewModel.nodeList.observe(viewLifecycleOwner) {
             nodeListAdapter.submitList(it.toList())
             if (it.isEmpty()) {
                 binding.rvNodes.visibility = View.INVISIBLE
@@ -342,7 +390,7 @@ class ConstructionFragment : Fragment() {
                 binding.tvEmptyRvNodes.visibility = View.INVISIBLE
             }
         }
-        constructionViewModel.rodList.observe(viewLifecycleOwner) {
+        viewModel.rodList.observe(viewLifecycleOwner) {
             rodListAdapter.submitList(it.toList())
             if (it.isEmpty()) {
                 binding.rvRods.visibility = View.INVISIBLE
@@ -362,11 +410,11 @@ class ConstructionFragment : Fragment() {
     }
 
     private fun launchEditMode() {
-        constructionViewModel.getConstruction(constructionId)
+        viewModel.getConstruction(constructionId)
         binding.btnSaveConstruction.setOnClickListener {
-            if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_NULL) {
-                constructionViewModel.editConstruction()
-            } else if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_PROP) {
+            if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_NULL) {
+                viewModel.editConstruction()
+            } else if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_PROP) {
                 createSnackbarNotify(R.string.toast_need_support)
             } else {
                 createSnackbarNotify(R.string.toast_need_rods)
@@ -378,9 +426,9 @@ class ConstructionFragment : Fragment() {
         binding.tvEmptyRvNodes.visibility = View.VISIBLE
         binding.tvEmptyRvRods.visibility = View.VISIBLE
         binding.btnSaveConstruction.setOnClickListener {
-            if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_NULL) {
-                constructionViewModel.addConstruction()
-            } else if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_PROP) {
+            if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_NULL) {
+                viewModel.addConstruction()
+            } else if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_PROP) {
                 createSnackbarNotify(R.string.toast_need_support)
             } else {
                 createSnackbarNotify(R.string.toast_need_rods)

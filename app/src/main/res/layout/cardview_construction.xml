@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/iv_rod"
             android:layout_width="match_parent"
-            android:layout_height="110dp"
+            android:layout_height="150dp"
             android:contentDescription="@string/rod_image"
             android:scaleType="centerInside"
             android:paddingTop="8dp"

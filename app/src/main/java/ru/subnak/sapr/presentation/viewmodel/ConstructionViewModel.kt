@@ -104,8 +104,8 @@ class ConstructionViewModel @Inject constructor(
         val drawable = ConstructionDrawable(construction)
 
         val bitmap = Bitmap.createBitmap(
-            getConstructionImageWidth(),
-            800,
+            4000,
+            2000,
             Bitmap.Config.ARGB_8888
         )
 
@@ -115,23 +115,19 @@ class ConstructionViewModel @Inject constructor(
         return bitmap
     }
 
-    private fun getConstructionImageWidth(): Int {
-        return _nodeMutableList.last().x.toInt() + _nodeMutableList.size * 200
-    }
-
     fun checkPropAndCountOfRods(): Int {
-        var result = ERROR_TYPE_NULL
+        var result = ERROR_NULL
 
         if (_nodeMutableList.size - _rodMutableList.size == 1) {
             _nodeMutableList.forEach {
                 if (it.prop) {
-                    return ERROR_TYPE_NULL
+                    return ERROR_NULL
                 } else {
-                    result = ERROR_TYPE_PROP
+                    result = ERROR_PROP
                 }
             }
         } else {
-            result = ERROR_TYPE_ROD
+            result = ERROR_ROD
         }
         return result
     }
@@ -340,8 +336,8 @@ class ConstructionViewModel @Inject constructor(
 
     companion object {
 
-        const val ERROR_TYPE_NULL = 100
-        const val ERROR_TYPE_PROP = 101
-        const val ERROR_TYPE_ROD = 102
+        const val ERROR_NULL = 100
+        const val ERROR_PROP = 101
+        const val ERROR_ROD = 102
     }
 }
