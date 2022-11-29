@@ -25,7 +25,7 @@
     <string name="construction_btn_calculate">Calculate</string>
     <string name="construction_btn_add_rod">Add rod</string>
     <string name="construction_btn_add_node">Add node</string>
-    <string name="toast_rod_to_many">Too many rods!</string>
+    <string name="toast_rod_too_many">Too many rods!</string>
     <string name="toast_need_support">There must be at least one support</string>
     <string name="toast_need_rods">Not enough rods in construction</string>
     <string name="tv_no_nodes_in_this_construction">No nodes in this construction</string>
@@ -78,10 +78,11 @@
 
     <!-- Dialog delete -->
     <string name="dialog_delete_message_construction">Delete this construction?</string>
-    <string name="dialog_delete_ok">OK</string>
     <string name="dialog_delete_cancel">Cancel</string>
 
 
+
+    <string name="ok">OK</string>
 
 
 </resources>

@@ -69,7 +69,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setupButtonAdd() {
-        binding.buttonAdd.setOnClickListener {
+        binding.floatingActionButton.setOnClickListener {
             launchFragment(ConstructionFragment.newInstanceAddConstruction())
         }
     }
@@ -107,7 +107,7 @@ class MainFragment : Fragment() {
     private fun deleteDialog(construction: Construction) {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.dialog_delete_message_construction)
-            .setPositiveButton(R.string.dialog_delete_ok) { d, _ ->
+            .setPositiveButton(R.string.ok) { d, _ ->
                 viewModel.deleteConstruction(construction)
                 d.dismiss()
             }

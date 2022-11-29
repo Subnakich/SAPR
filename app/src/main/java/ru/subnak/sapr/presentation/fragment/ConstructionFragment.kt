@@ -7,12 +7,12 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import ru.subnak.sapr.R
 import ru.subnak.sapr.databinding.DialogNodeBinding
 import ru.subnak.sapr.databinding.DialogRodBinding
@@ -92,8 +92,7 @@ class ConstructionFragment : Fragment() {
             if (rodListSize < nodeListSize - 1) {
                 rodsDialog()
             } else {
-                Toast.makeText(requireContext(), R.string.toast_rod_to_many, Toast.LENGTH_LONG)
-                    .show()
+                createSnackbarNotify(R.string.toast_rod_too_many)
             }
         }
 
@@ -368,11 +367,9 @@ class ConstructionFragment : Fragment() {
             if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_NULL) {
                 constructionViewModel.editConstruction()
             } else if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_PROP) {
-                Toast.makeText(requireContext(), R.string.toast_need_support, Toast.LENGTH_LONG)
-                    .show()
+                createSnackbarNotify(R.string.toast_need_support)
             } else {
-                Toast.makeText(requireContext(), R.string.toast_need_rods, Toast.LENGTH_LONG)
-                    .show()
+                createSnackbarNotify(R.string.toast_need_rods)
             }
         }
     }
@@ -384,13 +381,22 @@ class ConstructionFragment : Fragment() {
             if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_NULL) {
                 constructionViewModel.addConstruction()
             } else if (constructionViewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_TYPE_PROP) {
-                Toast.makeText(requireContext(), R.string.toast_need_support, Toast.LENGTH_LONG)
-                    .show()
+                createSnackbarNotify(R.string.toast_need_support)
             } else {
-                Toast.makeText(requireContext(), R.string.toast_need_rods, Toast.LENGTH_LONG)
-                    .show()
+                createSnackbarNotify(R.string.toast_need_rods)
             }
         }
+    }
+
+    private fun createSnackbarNotify(text: Int) {
+        val snackbar = Snackbar.make(binding.btnSaveConstruction, text, Snackbar.LENGTH_SHORT)
+        snackbar.anchorView = binding.btnSaveConstruction
+        snackbar.setAction(R.string.ok) {
+            it.setOnClickListener {
+                snackbar.dismiss()
+            }
+        }
+        snackbar.show()
     }
 
     private fun parseArguments() {
