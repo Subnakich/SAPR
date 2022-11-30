@@ -42,15 +42,14 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
 
         val ratioWidth = bounds.width() / constructionWidth
         val ratioHeight = bounds.height() / constructionHeight * 0.75
-
-        Log.d("kek1", constructionHeight.toString())
-        Log.d("kek2", constructionWidth.toString())
-        Log.d("kek3", ratioWidth.toString())
-        Log.d("kek4", ratioHeight.toString())
+        var xModifier = 0
+        var latestXNext: Int? = null
 
         construction.nodeValues.forEachIndexed { index, node ->
-            val x = (construction.nodeValues[index].x * ratioWidth).toInt()
-            val x1 = if (x < 100) {
+            val x = ((construction.nodeValues[index].x) * ratioWidth).toInt() + xModifier
+            val x1 = if (latestXNext != null){
+                latestXNext!!
+            } else if (x < 100) {
                 100
             } else if (x >= bounds.width() - 100) {
                 bounds.width() - 100
@@ -58,14 +57,20 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
                 x
             }
             if (index + 1 <= construction.rodValues.size) {
-                val xNext = (construction.nodeValues[index + 1].x * ratioWidth).toInt()
+                val xNext = ((construction.nodeValues[index + 1].x) * ratioWidth).toInt() + xModifier
+                if (xNext - x1 < 100) {
+                    xModifier += 100
+                }
                 val x2 = if (xNext < 100) {
-                    100
+                    100 + xModifier
                 } else if (xNext >= bounds.width() - 100) {
                     bounds.width() - 100
+                } else if (xNext - x1 < 100) {
+                    xNext + xModifier
                 } else {
-                    xNext
+                    xNext + xModifier
                 }
+                latestXNext = x2
                 val square = (construction.rodValues[index].square * ratioHeight).toInt()
                 val loadRunning = construction.rodValues[index].loadRunning.toInt()
                 drawRod(canvas, x1, x2, square)
@@ -81,7 +86,6 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
                     drawLeftProp(canvas, x1)
                 }
             } else {
-                Log.d("kek1", x1.toString())
                 if (node.prop) {
                     drawRightProp(canvas, x1)
                 }
