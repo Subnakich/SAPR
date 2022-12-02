@@ -2,7 +2,6 @@ package ru.subnak.sapr.presentation
 
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import android.util.Log
 import ru.subnak.sapr.domain.model.Construction
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -41,7 +40,7 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
 
 
         val ratioWidth = bounds.width() / constructionWidth
-        val ratioHeight = bounds.height() / constructionHeight * 0.75
+        val ratioHeight = bounds.height() / constructionHeight * 0.7
         var xModifier = 0
         var latestXNext: Int? = null
 
@@ -94,47 +93,6 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
                 drawConcentratedLoad(canvas, x1, loadConcentrated)
             }
         }
-
-
-//        for ((i, value) in construction.nodeValues.withIndex()) {
-//            var absoluteX = 10
-//            val x = if (construction.nodeValues[i].x == 0.0) {
-//                absoluteX *= 5
-//                ((construction.nodeValues[i].x + 1) * absoluteX).toInt()
-//
-//            } else {
-//                absoluteX *= 5
-//                (construction.nodeValues[i].x * absoluteX).toInt()
-//            }
-//
-//
-//            if (i + 1 < construction.nodeValues.size) {
-//                if (value.prop) {
-//                    drawLeftProp(canvas, x)
-//                }
-//            } else {
-//                if (value.prop) {
-//                    drawRightProp(canvas, x)
-//                }
-//            }
-//
-//            if (i + 1 <= construction.rodValues.size) {
-//                val x1 = (construction.nodeValues[i + 1].x * absoluteX).toInt()
-//                val square = construction.rodValues[i].square
-//                val loadRunning = construction.rodValues[i].loadRunning
-//                drawRod(canvas, x, x1, (square.toInt() + 10) * 10)
-//                if (loadRunning.toInt() != 0) {
-//                    drawRunningLoad(canvas, x, x1, loadRunning.toInt())
-//                }
-//                Log.d("kek", loadRunning.toString())
-//            }
-//
-//            val loadConcentrated = construction.nodeValues[vi].loadConcentrated
-//            drawConcentratedLoad(canvas, x, loadConcentrated.toInt())
-//
-//
-//        }
-
     }
 
     override fun setAlpha(alpha: Int) {

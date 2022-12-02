@@ -20,7 +20,7 @@ class CalculatingFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var calculatingViewModel: CalculatingViewModel
+    private lateinit var viewModel: CalculatingViewModel
 
     private var _binding: FragmentCalculatingBinding? = null
     private val binding: FragmentCalculatingBinding
@@ -53,15 +53,14 @@ class CalculatingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        calculatingViewModel =
+        viewModel =
             ViewModelProvider(this, viewModelFactory)[CalculatingViewModel::class.java]
-        calculatingViewModel.getConstruction(constructionId)
+        viewModel.getConstruction(constructionId)
 
-        calculatingViewModel.construction.observe(viewLifecycleOwner) {
+        viewModel.construction.observe(viewLifecycleOwner) {
             binding.constructionImage.setImageBitmap(it.img)
-
+            viewModel.calculateComponents(it)
         }
-
 
     }
 

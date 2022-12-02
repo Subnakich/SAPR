@@ -63,4 +63,8 @@ dependencies {
 
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+
+    // MULTIK
+    implementation "org.jetbrains.kotlinx:multik-core:0.2.0"
+    implementation "org.jetbrains.kotlinx:multik-default:0.2.0"
 }
