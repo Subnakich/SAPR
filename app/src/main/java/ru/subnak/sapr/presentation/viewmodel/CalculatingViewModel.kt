@@ -16,9 +16,17 @@ import ru.subnak.sapr.domain.model.Construction
 import ru.subnak.sapr.domain.usecase.GetConstructionUseCase
 import javax.inject.Inject
 
+typealias ConstructionFunction = (x: Double) -> Double
+
 class CalculatingViewModel @Inject constructor(
     private val getConstructionUseCase: GetConstructionUseCase
 ) : ViewModel() {
+
+    data class Result(
+        val Ux: List<ConstructionFunction>,
+        val Nx: List<ConstructionFunction>,
+        val Sx: List<ConstructionFunction>
+    )
 
     private val _construction = MutableLiveData<Construction>()
     val construction: LiveData<Construction>
@@ -30,7 +38,7 @@ class CalculatingViewModel @Inject constructor(
         }
     }
 
-    fun calculateComponents(construction: Construction) {
+    fun calculateComponents(construction: Construction): Result {
         val nodes = construction.nodeValues
         val rods = construction.rodValues
         val b = nodes.map {
@@ -88,9 +96,9 @@ class CalculatingViewModel @Inject constructor(
 
         val solve = mk.linalg.solve(A, mk.ndarray(b))
 
-        val Nx = mutableListOf<Double>()
-        val Ux = mutableListOf<Double>()
-        val Sx = mutableListOf<Double>()
+        val Nx = mutableListOf<ConstructionFunction>()
+        val Ux = mutableListOf<ConstructionFunction>()
+        val Sx = mutableListOf<ConstructionFunction>()
 
         for(i in 0 until solve.size-1) {
             val rod = rods[i]
@@ -99,17 +107,32 @@ class CalculatingViewModel @Inject constructor(
             val a = rod.square
             val q = rod.loadRunning
 
-            val u0 = if (nodes[i].x < nodes[i+1].x) solve[i] else solve[i+1]
-            val ul = if (nodes[i].x < nodes[i+1].x) solve[i+1] else solve[i]
+            val u0 = solve[i]
+            val ul = solve[i+1]
 
-            val x = nodes[i].x
-            Ux.add(u0 + (x / l) * (ul - u0) + ((q * l * x) / (2 * e * a)) * (1 - x / l))
-            Nx.add(((e * a) / l) * (ul - u0) + ((q * l) / 2) * (1 - (2 * x) / l))
-            Sx.add(Nx[i] / a)
+            Ux.add {
+                u0 + (it / l) * (ul - u0) + ((q * l * it) / (2 * e * a)) * (1 - it / l)
+            }
+
+            Nx.add {
+                ((e * a) / l) * (ul - u0) + ((q * l) / 2) * (1 - (2 * it) / l)
+            }
+
+            Sx.add {
+                Nx[i].invoke(it) / a
+            }
+
+//            Ux.add(u0 + (x / l) * (ul - u0) + ((q * l * x) / (2 * e * a)) * (1 - x / l))
+//            Nx.add(((e * a) / l) * (ul - u0) + ((q * l) / 2) * (1 - (2 * x) / l))
+//            Sx.add(Nx[i] / a)
         }
-        Log.d("kek Ux", Ux.toString())
-        Log.d("kek Nx", Nx.toString())
-        Log.d("kek Sx", Sx.toString())
+        val res = Result(Ux, Nx, Sx)
+        Log.d("kek", res.toString())
+        for (i in Ux){
+            Log.d("kek", i.invoke(0.0).toString())
+        }
+        return res
 
     }
 }
+
