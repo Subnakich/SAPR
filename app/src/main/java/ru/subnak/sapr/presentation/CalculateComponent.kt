@@ -1,12 +1,12 @@
 package ru.subnak.sapr.presentation
 
 import org.jetbrains.kotlinx.multik.api.linalg.solve
+import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
 import org.jetbrains.kotlinx.multik.api.zeros
 import org.jetbrains.kotlinx.multik.ndarray.data.get
 import org.jetbrains.kotlinx.multik.ndarray.data.set
 import ru.subnak.sapr.domain.model.Construction
-import org.jetbrains.kotlinx.multik.api.mk
 
 typealias ConstructionFunction = (x: Double) -> Double
 
@@ -32,34 +32,34 @@ class CalculateComponent {
             }
         }
 
-        val EAL = rods.mapIndexed { index, rod ->
+        val eal = rods.mapIndexed { index, rod ->
             (rod.elasticModule * rod.square) / length[index]
         }
 
-        val A = mk.zeros<Double>(nodes.size, nodes.size)
+        val a = mk.zeros<Double>(nodes.size, nodes.size)
 
         for (i in 0..nodes.size - 2) {
-            A[i + 1, i + 1] = EAL[i]
+            a[i + 1, i + 1] = eal[i]
             if (nodes[i].prop) {
-                A[i, i] = 1.0
-                A[i, i + 1] = 0.0
-                A[i + 1, i] = 0.0
+                a[i, i] = 1.0
+                a[i, i + 1] = 0.0
+                a[i + 1, i] = 0.0
                 if (i > 0) {
-                    A[i, i - 1] = 0.0
-                    A[i - 1, i] = 0.0
+                    a[i, i - 1] = 0.0
+                    a[i - 1, i] = 0.0
                 }
             } else {
-                A[i, i] += EAL[i]
-                A[i, i + 1] = -EAL[i]
-                A[i + 1, i] = -EAL[i]
+                a[i, i] += eal[i]
+                a[i, i + 1] = -eal[i]
+                a[i + 1, i] = -eal[i]
             }
         }
 
         val lastNode = nodes.lastIndex
         if (nodes[lastNode].prop) {
-            A[lastNode,lastNode] = 1.0
-            A[lastNode,lastNode - 1] = 0.0
-            A[lastNode - 1,lastNode] = 0.0
+            a[lastNode, lastNode] = 1.0
+            a[lastNode, lastNode - 1] = 0.0
+            a[lastNode - 1, lastNode] = 0.0
         }
 
         b[0] += (rods[0].loadRunning * length[0]) / 2
@@ -74,34 +74,34 @@ class CalculateComponent {
             }
         }
 
-        val solve = mk.linalg.solve(A, mk.ndarray(b))
+        val solve = mk.linalg.solve(a, mk.ndarray(b))
 
-        val Nx = mutableListOf<ConstructionFunction>()
-        val Ux = mutableListOf<ConstructionFunction>()
-        val Sx = mutableListOf<ConstructionFunction>()
+        val nx = mutableListOf<ConstructionFunction>()
+        val ux = mutableListOf<ConstructionFunction>()
+        val sx = mutableListOf<ConstructionFunction>()
 
-        for(i in 0 until solve.size-1) {
+        for (i in 0 until solve.size - 1) {
             val rod = rods[i]
             val l = length[i]
             val e = rod.elasticModule
-            val a = rod.square
+            val square = rod.square
             val q = rod.loadRunning
 
             val u0 = solve[i]
-            val ul = solve[i+1]
+            val ul = solve[i + 1]
 
-            Ux.add {
-                u0 + (it / l) * (ul - u0) + ((q * l * it) / (2 * e * a)) * (1 - it / l)
+            ux.add {
+                u0 + (it / l) * (ul - u0) + ((q * l * it) / (2 * e * square)) * (1 - it / l)
             }
 
-            Nx.add {
-                ((e * a) / l) * (ul - u0) + ((q * l) / 2) * (1 - (2 * it) / l)
+            nx.add {
+                ((e * square) / l) * (ul - u0) + ((q * l) / 2) * (1 - (2 * it) / l)
             }
 
-            Sx.add {
-                Nx[i].invoke(it) / a
+            sx.add {
+                nx[i].invoke(it) / square
             }
         }
-        return CalculatedResult(Ux, Nx, Sx)
+        return CalculatedResult(ux, nx, sx)
     }
 }

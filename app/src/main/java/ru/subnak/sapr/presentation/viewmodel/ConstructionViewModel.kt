@@ -1,5 +1,6 @@
 package ru.subnak.sapr.presentation.viewmodel
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.lifecycle.LiveData
@@ -53,41 +54,45 @@ class ConstructionViewModel @Inject constructor(
     val errorInputTension: LiveData<Boolean>
         get() = _errorInputTension
 
-    fun addConstruction() {
+    fun addConstruction(context: Context) {
         viewModelScope.launch {
+            val bitmap = getBitmap(
+                _nodeMutableList.toList(),
+                _rodMutableList.toList()
+            )?.let {
+                BitmapCache(context).saveToCacheAndGetUri(
+                    it,
+                    System.currentTimeMillis().toString()
+                )
+            }
             val construction = Construction(
                 System.currentTimeMillis(),
                 _nodeMutableList,
-                _rodMutableList
-            )
-            val bitmap = getBitmap(construction)
-//            val bitmap = getBitmap(construction)?.let {
-//                BitmapCache().saveToCacheAndGetUri(it)
-//            }
-            val constructionForSave = Construction(
-                System.currentTimeMillis(),
-                _nodeMutableList,
                 _rodMutableList,
-                bitmap
+                bitmap.toString()
             )
-            addConstructionUseCase.invoke(constructionForSave)
+            addConstructionUseCase.invoke(construction)
         }
     }
 
-    fun editConstruction() {
+    fun editConstruction(context: Context) {
         viewModelScope.launch {
-            _construction.value?.let {
-                val construction = it.copy(
-                    nodeValues = _nodeMutableList.toList(),
-                    rodValues = _rodMutableList.toList()
-                )
-                val bitmap = getBitmap(construction)
-                val constructionForSave = it.copy(
+            _construction.value?.let { constructionValue ->
+                val bitmap = getBitmap(
+                    _nodeMutableList.toList(),
+                    _rodMutableList.toList()
+                )?.let {
+                    BitmapCache(context).saveToCacheAndGetUri(
+                        it,
+                        System.currentTimeMillis().toString()
+                    )
+                }
+                val construction = constructionValue.copy(
                     nodeValues = _nodeMutableList.toList(),
                     rodValues = _rodMutableList.toList(),
-                    img = bitmap
+                    img = bitmap.toString()
                 )
-                editConstructionUseCase.invoke(constructionForSave)
+                editConstructionUseCase.invoke(construction)
             }
 
         }
@@ -104,8 +109,8 @@ class ConstructionViewModel @Inject constructor(
         }
     }
 
-    private fun getBitmap(construction: Construction): Bitmap? {
-        val drawable = ConstructionDrawable(construction)
+    private fun getBitmap(nodeValues: List<Node>, rodValues: List<Rod>): Bitmap? {
+        val drawable = ConstructionDrawable(nodeValues, rodValues)
 
         val bitmap = Bitmap.createBitmap(
             2000,

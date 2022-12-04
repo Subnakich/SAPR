@@ -1,6 +1,7 @@
 package ru.subnak.sapr.presentation.adapter
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -31,7 +32,8 @@ class ConstructionListAdapter : ListAdapter<Construction, ConstructionViewHolder
     override fun onBindViewHolder(holder: ConstructionViewHolder, position: Int) {
         val construction = getItem(position)
         holder.binding.tvDateHistory.text = getDate(construction.date, holder.itemView.context)
-        holder.binding.ivRod.setImageBitmap(construction.img)
+        //holder.binding.ivRod.setImageBitmap(construction.img)
+        holder.binding.ivRod.setImageURI(Uri.parse(construction.img))
         holder.itemView.setOnClickListener {
             onConstructionListClickListener?.invoke(construction)
         }

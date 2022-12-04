@@ -1,22 +1,19 @@
 package ru.subnak.sapr.presentation
 
-import android.app.Application
+import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.text.TextUtils
+import android.util.Log
 import androidx.core.content.FileProvider
-import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import javax.inject.Inject
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
-class BitmapCache {
+class BitmapCache(private val application: Context) {
 
-    @Inject
-    lateinit var application: Application
+
     /**
      * Save image to the App cache
      * @param bitmap to save to the cache
@@ -24,7 +21,7 @@ class BitmapCache {
      * If name is null file will be named by default [.TEMP_FILE_NAME]
      * @return file dir when file was saved
      */
-    fun saveImgToCache(bitmap: Bitmap, name: String?): File? {
+    private fun saveImgToCache(bitmap: Bitmap, name: String?): File? {
         var cachePath: File? = null
         var fileName: String? = TEMP_FILE_NAME
         if (!TextUtils.isEmpty(name)) {
@@ -74,7 +71,11 @@ class BitmapCache {
         }
         val imagePath = File(application.cacheDir, CHILD_DIR)
         val newFile = File(imagePath, fileName + FILE_EXTENSION)
-        return FileProvider.getUriForFile(application, application.packageName + ".provider", newFile)
+        return FileProvider.getUriForFile(
+            application,
+            application.packageName + ".provider",
+            newFile
+        )
     }
 
     // Get an image Uri by name without extension from a file dir
@@ -84,7 +85,11 @@ class BitmapCache {
             fileName = name
         }
         val newFile = File(fileDir, fileName + FILE_EXTENSION)
-        return FileProvider.getUriForFile(application, application.packageName + ".provider", newFile)
+        return FileProvider.getUriForFile(
+            application,
+            application.packageName + ".provider",
+            newFile
+        )
     }
 
     /**
@@ -95,7 +100,7 @@ class BitmapCache {
     }
 
     companion object {
-        val TAG = BitmapCache::class.java.simpleName
+        private val TAG = BitmapCache::class.java.simpleName
         private const val CHILD_DIR = "images"
         private const val TEMP_FILE_NAME = "img"
         private const val FILE_EXTENSION = ".png"

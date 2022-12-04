@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import ru.subnak.sapr.data.database.dao.ConstructionDao
 import ru.subnak.sapr.data.database.entity.ConstructionDbModel
 import ru.subnak.sapr.data.database.entity.NodeDbModel
@@ -16,10 +15,9 @@ import ru.subnak.sapr.data.database.entity.RodDbModel
         RodDbModel::class,
         NodeDbModel::class
     ],
-    version = 8,
+    version = 1,
     exportSchema = false
 )
-@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun rodDao(): ConstructionDao

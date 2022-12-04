@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class EditConstructionUseCase @Inject constructor(
     private val repository: ConstructionRepository
-    ) {
+) {
 
     suspend fun invoke(construction: Construction) = repository.editConstruction(construction)
 }

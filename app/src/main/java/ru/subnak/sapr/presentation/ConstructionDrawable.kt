@@ -2,11 +2,15 @@ package ru.subnak.sapr.presentation
 
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import ru.subnak.sapr.domain.model.Construction
+import ru.subnak.sapr.domain.model.Node
+import ru.subnak.sapr.domain.model.Rod
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-class ConstructionDrawable(private val construction: Construction) : Drawable() {
+class ConstructionDrawable(
+    private val nodeValues: List<Node>,
+    private val rodValues: List<Rod>,
+) : Drawable() {
 
     private val rodPaint = Paint().apply {
         color = Color.BLACK
@@ -28,13 +32,13 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
 
     override fun draw(canvas: Canvas) {
 
-        val constructionHeight = construction.rodValues.maxOf {
+        val constructionHeight = rodValues.maxOf {
             it.square
         }.roundToInt()
 
 
-        val xFirst = construction.nodeValues.first().x
-        val xLast = construction.nodeValues.last().x
+        val xFirst = nodeValues.first().x
+        val xLast = nodeValues.last().x
 
         val constructionWidth = abs(xFirst - xLast).roundToInt()
 
@@ -44,9 +48,9 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
         var xModifier = 0
         var latestXNext: Int? = null
 
-        construction.nodeValues.forEachIndexed { index, node ->
-            val x = ((construction.nodeValues[index].x) * ratioWidth).toInt() + xModifier
-            val x1 = if (latestXNext != null){
+        nodeValues.forEachIndexed { index, node ->
+            val x = ((nodeValues[index].x) * ratioWidth).toInt() + xModifier
+            val x1 = if (latestXNext != null) {
                 latestXNext!!
             } else if (x < 100) {
                 100
@@ -55,8 +59,8 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
             } else {
                 x
             }
-            if (index + 1 <= construction.rodValues.size) {
-                val xNext = ((construction.nodeValues[index + 1].x) * ratioWidth).toInt() + xModifier
+            if (index + 1 <= rodValues.size) {
+                val xNext = ((nodeValues[index + 1].x) * ratioWidth).toInt() + xModifier
                 if (xNext - x1 < 100) {
                     xModifier += 100
                 }
@@ -70,15 +74,15 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
                     xNext + xModifier
                 }
                 latestXNext = x2
-                val square = (construction.rodValues[index].square * ratioHeight).toInt()
-                val loadRunning = construction.rodValues[index].loadRunning.toInt()
+                val square = (rodValues[index].square * ratioHeight).toInt()
+                val loadRunning = rodValues[index].loadRunning.toInt()
                 drawRod(canvas, x1, x2, square)
 
                 if (loadRunning != 0) {
                     drawRunningLoad(canvas, x1, x2, loadRunning)
                 }
 
-                val loadConcentrated = construction.nodeValues[index].loadConcentrated.toInt()
+                val loadConcentrated = nodeValues[index].loadConcentrated.toInt()
                 drawConcentratedLoad(canvas, x1, loadConcentrated)
 
                 if (node.prop) {
@@ -89,7 +93,7 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
                     drawRightProp(canvas, x1)
                 }
 
-                val loadConcentrated = construction.nodeValues[index].loadConcentrated.toInt()
+                val loadConcentrated = nodeValues[index].loadConcentrated.toInt()
                 drawConcentratedLoad(canvas, x1, loadConcentrated)
             }
         }
@@ -103,6 +107,9 @@ class ConstructionDrawable(private val construction: Construction) : Drawable() 
 
     }
 
+    @Deprecated("Deprecated in Java",
+        ReplaceWith("PixelFormat.OPAQUE", "android.graphics.PixelFormat")
+    )
     override fun getOpacity(): Int {
         return PixelFormat.OPAQUE
     }

@@ -1,7 +1,10 @@
 package ru.subnak.sapr.data.database.entity
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
+import androidx.room.Index
 
 @Entity(
     tableName = "node",

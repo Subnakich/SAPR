@@ -12,7 +12,6 @@ import ru.subnak.sapr.presentation.callback.NodeCallback
 import ru.subnak.sapr.presentation.viewholder.NodeViewHolder
 import java.math.MathContext
 import java.math.RoundingMode
-import java.text.DecimalFormat
 
 class NodeListAdapter : ListAdapter<Node, NodeViewHolder>(NodeCallback()) {
 
@@ -53,7 +52,7 @@ class NodeListAdapter : ListAdapter<Node, NodeViewHolder>(NodeCallback()) {
 
     private fun trimToEngineeringString(double: Double): String {
         return double
-            .toBigDecimal(MathContext(3,RoundingMode.HALF_UP))
+            .toBigDecimal(MathContext(3, RoundingMode.HALF_UP))
             .toEngineeringString()
     }
 

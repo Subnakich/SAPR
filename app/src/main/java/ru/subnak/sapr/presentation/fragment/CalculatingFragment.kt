@@ -1,7 +1,7 @@
 package ru.subnak.sapr.presentation.fragment
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.slider.Slider
 import ru.subnak.sapr.R
-import ru.subnak.sapr.databinding.DialogNodeBinding
 import ru.subnak.sapr.databinding.FragmentCalculatingBinding
 import ru.subnak.sapr.domain.model.Construction
 import ru.subnak.sapr.presentation.ConstructionApplication
@@ -66,7 +65,7 @@ class CalculatingFragment : Fragment() {
         viewModel.getConstruction(constructionId)
         setEditTextAddTextChangedListener()
         viewModel.construction.observe(viewLifecycleOwner) {
-            binding.constructionImage.setImageBitmap(it.img)
+            binding.constructionImage.setImageURI(Uri.parse(it.img))
             viewModel.setResult(it)
             val numberOfRods = it.rodValues.size.toFloat()
             if (numberOfRods > ONE) {
@@ -104,13 +103,16 @@ class CalculatingFragment : Fragment() {
         }
 
         viewModel.resultNx.observe(viewLifecycleOwner) {
-            binding.tvResultNx.text = it.toBigDecimal(MathContext(5, RoundingMode.HALF_UP)).toEngineeringString()
+            binding.tvResultNx.text =
+                it.toBigDecimal(MathContext(5, RoundingMode.HALF_UP)).toEngineeringString()
         }
         viewModel.resultUx.observe(viewLifecycleOwner) {
-            binding.tvResultUx.text = it.toBigDecimal(MathContext(5, RoundingMode.HALF_UP)).toEngineeringString()
+            binding.tvResultUx.text =
+                it.toBigDecimal(MathContext(5, RoundingMode.HALF_UP)).toEngineeringString()
         }
         viewModel.resultSx.observe(viewLifecycleOwner) {
-            binding.tvResultSx.text = it.toBigDecimal(MathContext(5, RoundingMode.HALF_UP)).toEngineeringString()
+            binding.tvResultSx.text =
+                it.toBigDecimal(MathContext(5, RoundingMode.HALF_UP)).toEngineeringString()
         }
 
 

@@ -413,7 +413,7 @@ class ConstructionFragment : Fragment() {
         viewModel.getConstruction(constructionId)
         binding.btnSaveConstruction.setOnClickListener {
             if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_NULL) {
-                viewModel.editConstruction()
+                viewModel.editConstruction(requireContext())
             } else if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_PROP) {
                 createSnackbarNotify(R.string.toast_need_support)
             } else {
@@ -427,7 +427,7 @@ class ConstructionFragment : Fragment() {
         binding.tvEmptyRvRods.visibility = View.VISIBLE
         binding.btnSaveConstruction.setOnClickListener {
             if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_NULL) {
-                viewModel.addConstruction()
+                viewModel.addConstruction(requireContext())
             } else if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_PROP) {
                 createSnackbarNotify(R.string.toast_need_support)
             } else {
@@ -465,13 +465,6 @@ class ConstructionFragment : Fragment() {
         }
     }
 
-    private fun launchFragment(fragment: Fragment) {
-        requireActivity().supportFragmentManager.popBackStack()
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
 
     companion object {
 

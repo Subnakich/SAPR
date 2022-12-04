@@ -1,6 +1,5 @@
 package ru.subnak.sapr.domain.model
 
-import android.graphics.Bitmap
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
@@ -9,7 +8,7 @@ data class Construction(
     val date: Long,
     val nodeValues: List<Node>,
     val rodValues: List<Rod>,
-    val img: Bitmap? = null,
+    val img: String,
     val id: Int = UNDEFINED_ID
 ) : Parcelable {
 

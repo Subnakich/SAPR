@@ -21,7 +21,7 @@
     <!-- ConstructionFragment -->
     <string name="nodes_title">Nodes</string>
     <string name="rods_title">Rods</string>
-    <string name="construction_btn_calculate">Calculate</string>
+    <string name="construction_btn_calculate">Save construction</string>
     <string name="construction_btn_add_rod">Add rod</string>
     <string name="construction_btn_add_node">Add node</string>
     <string name="toast_rod_too_many">Too many rods!</string>

@@ -70,9 +70,9 @@ class CalculatingViewModel @Inject constructor(
         val x = parseDouble(inputX)
         val validField = validateInputX(x)
         if (validField) {
-            _resultUx.value = result?.Ux?.get(rodNumber-1)?.invoke(x)
-            _resultNx.value = result?.Nx?.get(rodNumber-1)?.invoke(x)
-            _resultSx.value = result?.Sx?.get(rodNumber-1)?.invoke(x)
+            _resultUx.value = result?.Ux?.get(rodNumber - 1)?.invoke(x)
+            _resultNx.value = result?.Nx?.get(rodNumber - 1)?.invoke(x)
+            _resultSx.value = result?.Sx?.get(rodNumber - 1)?.invoke(x)
         }
     }
 
@@ -83,26 +83,11 @@ class CalculatingViewModel @Inject constructor(
         } else {
             0.0
         }
-//        if (rodNumber > 1) {
-//            if (x - xDivide > nodeList[rodNumber].x - xDivide - nodeList[rodNumber-1].x) {
-//                result = false
-//                _errorInputX.value = true
-//            }
-//        } else {
-//
-//        }
         if (x > nodeList[rodNumber].x - xDivide) {
             result = false
             _errorInputX.value = true
         }
         return result
     }
-
-
-    fun resetErrorInputX() {
-        _errorInputX.value = false
-    }
-
-
 }
 
