@@ -13,6 +13,7 @@ import ru.subnak.sapr.domain.model.Rod
 import ru.subnak.sapr.domain.usecase.AddConstructionUseCase
 import ru.subnak.sapr.domain.usecase.EditConstructionUseCase
 import ru.subnak.sapr.domain.usecase.GetConstructionUseCase
+import ru.subnak.sapr.presentation.BitmapCache
 import ru.subnak.sapr.presentation.ConstructionDrawable
 import javax.inject.Inject
 
@@ -60,6 +61,9 @@ class ConstructionViewModel @Inject constructor(
                 _rodMutableList
             )
             val bitmap = getBitmap(construction)
+//            val bitmap = getBitmap(construction)?.let {
+//                BitmapCache().saveToCacheAndGetUri(it)
+//            }
             val constructionForSave = Construction(
                 System.currentTimeMillis(),
                 _nodeMutableList,
@@ -104,8 +108,8 @@ class ConstructionViewModel @Inject constructor(
         val drawable = ConstructionDrawable(construction)
 
         val bitmap = Bitmap.createBitmap(
-            4000,
             2000,
+            1000,
             Bitmap.Config.ARGB_8888
         )
 
