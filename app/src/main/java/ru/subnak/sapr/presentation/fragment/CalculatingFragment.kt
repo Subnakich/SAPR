@@ -1,10 +1,12 @@
 package ru.subnak.sapr.presentation.fragment
 
 import android.content.Context
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -102,6 +104,26 @@ class CalculatingFragment : Fragment() {
             binding.tvResultSx.text = getString(R.string.m_dash)
         }
 
+        viewModel.errorSx.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.tvResultSx.setTextColor(resources.getColor(R.color.red))
+            } else {
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_YES -> binding.tvResultSx.setTextColor(
+                        resources.getColor(
+                            R.color.md_theme_dark_onSurfaceVariant
+                        )
+                    )
+                    Configuration.UI_MODE_NIGHT_NO -> binding.tvResultSx.setTextColor(
+                        resources.getColor(
+                            R.color.md_theme_light_onSurfaceVariant
+                        )
+                    )
+                }
+
+            }
+        }
+
         viewModel.resultNx.observe(viewLifecycleOwner) {
             binding.tvResultNx.text =
                 it.toBigDecimal(MathContext(5, RoundingMode.HALF_UP)).toEngineeringString()
@@ -125,12 +147,15 @@ class CalculatingFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.resetErrorSx()
                 viewModel.calculateLocalResult(s.toString())
                 if (count == 0) {
                     binding.tvResultNx.text = getString(R.string.m_dash)
                     binding.tvResultUx.text = getString(R.string.m_dash)
                     binding.tvResultSx.text = getString(R.string.m_dash)
+                    viewModel.resetErrorSx()
                 }
+
             }
 
             override fun afterTextChanged(s: Editable?) {

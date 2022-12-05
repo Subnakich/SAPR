@@ -69,81 +69,78 @@
             android:id="@+id/tbl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="3"
-            android:layout_marginTop="4dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/cell_shape">
+            android:background="@drawable/cell_shape"
+            android:stretchColumns="3">
 
             <TableRow>
-
                 <TextView
                     android:id="@+id/tv_nx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/cell_shape"
                     android:gravity="center"
                     android:text="@string/nx"
                     android:textSize="16sp"
-                    tools:text="Nx"
-                    android:background="@drawable/cell_shape" />
-
-                <TextView
-                    android:id="@+id/tv_sx"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/sx"
-                    android:textSize="16sp"
-                    tools:text="Ux"
-                    android:background="@drawable/cell_shape" />
-
-                <TextView
-                    android:id="@+id/tv_ux"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/ux"
-                    android:textSize="16sp"
-                    tools:text="Sx"
-                    android:background="@drawable/cell_shape" />
-            </TableRow>
-
-            <TableRow>
-
+                    tools:text="Nx" />
                 <TextView
                     android:id="@+id/tv_result_nx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/cell_shape"
                     android:gravity="center"
                     android:text="@string/m_dash"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/tv_ux"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:text="@string/ux"
                     android:textSize="16sp"
-                    android:background="@drawable/cell_shape" />
+                    tools:text="Ux" />
+                <TextView
+                    android:id="@+id/tv_result_ux"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:text="@string/m_dash"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/tv_sx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/cell_shape"
+                    android:gravity="center"
+                    android:text="@string/sx"
+                    android:textSize="16sp"
+                    tools:text="Sx" />
 
                 <TextView
                     android:id="@+id/tv_result_sx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/cell_shape"
                     android:gravity="center"
                     android:text="@string/m_dash"
-                    android:textSize="16sp"
-                    android:background="@drawable/cell_shape" />
-
-                <TextView
-                    android:id="@+id/tv_result_ux"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/m_dash"
-                    android:textSize="16sp"
-                    android:background="@drawable/cell_shape" />
+                    android:textSize="16sp" />
             </TableRow>
         </TableLayout>
-
     </LinearLayout>
 </ScrollView>

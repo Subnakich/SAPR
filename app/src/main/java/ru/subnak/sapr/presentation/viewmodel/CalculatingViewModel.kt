@@ -7,10 +7,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.subnak.sapr.domain.model.Construction
 import ru.subnak.sapr.domain.model.Node
+import ru.subnak.sapr.domain.model.Rod
 import ru.subnak.sapr.domain.usecase.GetConstructionUseCase
 import ru.subnak.sapr.presentation.CalculateComponent
 import ru.subnak.sapr.presentation.CalculateComponent.CalculatedResult
 import javax.inject.Inject
+import kotlin.math.abs
 
 
 class CalculatingViewModel @Inject constructor(
@@ -25,6 +27,10 @@ class CalculatingViewModel @Inject constructor(
     val errorInputX: LiveData<Boolean>
         get() = _errorInputX
 
+    private val _errorSx = MutableLiveData<Boolean>()
+    val errorSx: LiveData<Boolean>
+        get() = _errorSx
+
     private val _resultNx = MutableLiveData<Double>()
     val resultNx: LiveData<Double>
         get() = _resultNx
@@ -38,6 +44,7 @@ class CalculatingViewModel @Inject constructor(
         get() = _resultUx
 
     private val nodeList = mutableListOf<Node>()
+    private val rodList = mutableListOf<Rod>()
 
     private var result: CalculatedResult? = null
     private var rodNumber = 1
@@ -47,6 +54,7 @@ class CalculatingViewModel @Inject constructor(
             val construction = getConstructionUseCase.invoke(constructionId)
             _construction.value = construction
             nodeList.addAll(construction.nodeValues.toMutableList())
+            rodList.addAll(construction.rodValues.toMutableList())
         }
     }
 
@@ -72,7 +80,13 @@ class CalculatingViewModel @Inject constructor(
         if (validField) {
             _resultUx.value = result?.Ux?.get(rodNumber - 1)?.invoke(x)
             _resultNx.value = result?.Nx?.get(rodNumber - 1)?.invoke(x)
-            _resultSx.value = result?.Sx?.get(rodNumber - 1)?.invoke(x)
+            val sx = result?.Sx?.get(rodNumber - 1)?.invoke(x)
+            _resultSx.value = sx
+            sx?.let {
+                if (abs(it) > rodList[rodNumber-1].tension) {
+                    _errorSx.value = true
+                }
+            }
         }
     }
 
@@ -88,6 +102,10 @@ class CalculatingViewModel @Inject constructor(
             _errorInputX.value = true
         }
         return result
+    }
+
+    fun resetErrorSx() {
+        _errorSx.value = false
     }
 }
 
