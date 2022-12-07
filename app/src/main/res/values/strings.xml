@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SAPR</string>
+    <string name="app_name" translatable="false">SAPR</string>
 
     <!-- Construction card view layout-->
     <string name="view_the_solution">View the solution</string>
@@ -87,7 +87,7 @@
     <string name="dialog_delete_message_rod">Delete this rod?</string>
 
 
-    <string name="ok">OK</string>
+    <string name="ok" translatable="false">OK</string>
     <string name="yes">Yes</string>
 
     <!-- CalculatingFragment -->
@@ -95,10 +95,10 @@
     <string name="values_in_an_cross_section">Values in an cross-section</string>
     <string name="select_the_rod_number">Select the rod number</string>
     <string name="enter_local_x_coordinate">Enter the local X coordinate</string>
-    <string name="nx">Nx</string>
-    <string name="ux">Ux</string>
-    <string name="sx">Sx</string>
-    <string name="m_dash">—</string>
+    <string name="nx" translatable="false">Nx</string>
+    <string name="ux" translatable="false">Ux</string>
+    <string name="sx" translatable="false">Sx</string>
+    <string name="m_dash" translatable="false">—</string>
     <string name="there_is_only_one_rod_here">There is only one rod here</string>
 
 
