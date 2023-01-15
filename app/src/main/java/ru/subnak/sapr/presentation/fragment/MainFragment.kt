@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ru.subnak.sapr.R
 import ru.subnak.sapr.databinding.FragmentMainBinding
 import ru.subnak.sapr.domain.model.Construction
@@ -61,9 +62,11 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        setupRecyclerView()
+        val rv = setupRecyclerView()
         viewModel.constructionList.observe(viewLifecycleOwner) {
-            constructionListAdapter.submitList(it.reversed())
+            constructionListAdapter.submitList(it) {
+                rv.scrollToPosition(constructionListAdapter.itemCount-1)
+            }
         }
         setupButtonAdd()
     }
@@ -74,14 +77,17 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerView(): RecyclerView {
         val rvConstructionList = binding.rvHistory
         constructionListAdapter = ConstructionListAdapter()
         rvConstructionList.adapter = constructionListAdapter
         val layoutManager =
             LinearLayoutManager(requireContext())
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
         rvConstructionList.layoutManager = layoutManager
         setupClickListener()
+        return rvConstructionList
     }
 
     private fun setupClickListener() {

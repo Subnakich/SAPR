@@ -437,8 +437,8 @@ class ConstructionFragment : Fragment() {
     }
 
     private fun createSnackbarNotify(text: Int) {
-        val snackbar = Snackbar.make(binding.btnSaveConstruction, text, Snackbar.LENGTH_SHORT)
-        snackbar.anchorView = binding.btnSaveConstruction
+        val snackbar = Snackbar.make(binding.btnAddNode, text, Snackbar.LENGTH_SHORT)
+        snackbar.anchorView = binding.btnAddNode
         snackbar.setAction(R.string.ok) {
             it.setOnClickListener {
                 snackbar.dismiss()
