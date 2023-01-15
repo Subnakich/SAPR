@@ -2,6 +2,9 @@
 
     <!-- ConstructionDrawable -->
     <color name="red">#FF0000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_half">#B6B6B6</color>
+    <color name="black">#000000</color>
 
 
     <!-- Theme -->

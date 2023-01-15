@@ -1,7 +1,6 @@
 package ru.subnak.sapr.presentation
 
 import android.app.Application
-import com.google.android.material.color.DynamicColors
 import ru.subnak.sapr.di.DaggerAppComponent
 
 class ConstructionApplication : Application() {
@@ -12,6 +11,8 @@ class ConstructionApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        DynamicColors.applyToActivitiesIfAvailable(this)
+
+
+        //DynamicColors.applyToActivitiesIfAvailable(this)
     }
 }

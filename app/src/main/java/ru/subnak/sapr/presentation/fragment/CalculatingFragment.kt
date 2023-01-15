@@ -6,13 +6,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.slider.Slider
 import ru.subnak.sapr.R
 import ru.subnak.sapr.databinding.FragmentCalculatingBinding
 import ru.subnak.sapr.domain.model.Construction
@@ -37,7 +35,6 @@ class CalculatingFragment : Fragment() {
 
     private var constructionId: Int = Construction.UNDEFINED_ID
 
-
     private val component by lazy {
         (requireActivity().application as ConstructionApplication).component
     }
@@ -57,7 +54,36 @@ class CalculatingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCalculatingBinding.inflate(inflater, container, false)
+        loadData()
         return binding.root
+    }
+
+    private fun loadData() {
+        binding.progressCircular.visibility = View.VISIBLE
+        binding.scrollViewCalculating.visibility = View.GONE
+
+    }
+
+    private fun rodToString(number: Int): String {
+        return String.format(
+            requireContext().getString(R.string.text_zero),
+            number
+        )
+    }
+
+    private fun setupPickerButtonListeners(numberOfRods: Int) {
+        binding.buttonMinus.setOnClickListener {
+            if (viewModel.rodNumber > 1) {
+                viewModel.rodNumber--
+                binding.tvRodNumber.text = rodToString(viewModel.rodNumber)
+            }
+        }
+        binding.buttonPlus.setOnClickListener {
+            if (viewModel.rodNumber < numberOfRods) {
+                viewModel.rodNumber++
+                binding.tvRodNumber.text = rodToString(viewModel.rodNumber)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,28 +95,20 @@ class CalculatingFragment : Fragment() {
         viewModel.construction.observe(viewLifecycleOwner) {
             binding.constructionImage.setImageURI(Uri.parse(it.img))
             viewModel.setResult(it)
-            val numberOfRods = it.rodValues.size.toFloat()
+            val numberOfRods = it.rodValues.size
             if (numberOfRods > ONE) {
-                binding.sbResultSelectX.valueTo = numberOfRods
-                binding.sbResultSelectX.valueFrom = 1F
-                binding.sbResultSelectX.value = 1F
+                binding.buttonMinus.visibility = View.VISIBLE
+                binding.buttonPlus.visibility = View.VISIBLE
+                binding.tvRodNumber.visibility = View.VISIBLE
+                setupPickerButtonListeners(numberOfRods)
             } else {
-                binding.tvResultSelectX.text = getString(R.string.there_is_only_one_rod_here)
-                binding.sbResultSelectX.isEnabled = false
-                binding.sbResultSelectX.valueTo = 2F
-                binding.sbResultSelectX.valueFrom = 0F
-                binding.sbResultSelectX.value = 1F
+                binding.buttonMinus.visibility = View.GONE
+                binding.buttonPlus.visibility = View.GONE
+                binding.tvRodNumber.visibility = View.GONE
             }
-
-            binding.sbResultSelectX.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-                override fun onStartTrackingTouch(slider: Slider) {
-
-                }
-
-                override fun onStopTrackingTouch(slider: Slider) {
-                    viewModel.setRodNumber(slider.value.toInt())
-                }
-            })
+            binding.tvRodNumber.text = rodToString(ONE)
+            binding.progressCircular.visibility = View.GONE
+            binding.scrollViewCalculating.visibility = View.VISIBLE
         }
         viewModel.errorInputX.observe(viewLifecycleOwner) {
             val message = if (it) {
@@ -103,7 +121,6 @@ class CalculatingFragment : Fragment() {
             binding.tvResultUx.text = getString(R.string.m_dash)
             binding.tvResultSx.text = getString(R.string.m_dash)
         }
-
         viewModel.errorSx.observe(viewLifecycleOwner) {
             if (it) {
                 binding.tvResultSx.setTextColor(resources.getColor(R.color.red))

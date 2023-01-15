@@ -19,7 +19,11 @@ class ConstructionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addConstruction(construction: Construction) {
-        constructionDao.addConstruction(mapper.mapConstructionWithValuesEntityToDbModel(construction))
+        constructionDao.addConstruction(
+            mapper.mapConstructionWithValuesEntityToDbModel(
+                construction
+            )
+        )
     }
 
     override suspend fun editConstruction(construction: Construction) {

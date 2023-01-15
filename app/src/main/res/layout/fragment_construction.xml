@@ -22,6 +22,10 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/tv_nodes_title"
                 android:layout_width="match_parent"
@@ -44,11 +48,11 @@
                 <TextView
                     android:id="@+id/tv_empty_rv_nodes"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="100dp"
                     android:gravity="center"
                     android:text="@string/tv_no_nodes_in_this_construction"
                     android:textSize="16sp"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -63,18 +67,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <Button
-                android:id="@+id/btn_add_node"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/construction_btn_add_node" />
-
 
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/md_con_second"
@@ -102,11 +94,11 @@
                 <TextView
                     android:id="@+id/tv_empty_rv_rods"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="100dp"
                     android:gravity="center"
                     android:text="@string/tv_no_rods_in_this_construction"
                     android:textSize="16sp"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -122,30 +114,48 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <Button
-                android:id="@+id/btn_add_rod"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/construction_btn_add_rod" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btn_add_node"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/construction_btn_add_node"
+        app:layout_constraintBottom_toTopOf="@id/btn_add_rod"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nsv_construction" />
+
+    <Button
+        android:id="@+id/btn_add_rod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/construction_btn_add_rod"
+        app:layout_constraintBottom_toTopOf="@id/btn_save_construction"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_node" />
 
     <Button
         android:id="@+id/btn_save_construction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/construction_btn_calculate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nsv_construction" />
+        app:layout_constraintTop_toBottomOf="@id/btn_add_rod" />
 </androidx.constraintlayout.widget.ConstraintLayout>

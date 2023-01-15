@@ -100,6 +100,12 @@
     <string name="sx" translatable="false">Sx</string>
     <string name="m_dash" translatable="false">—</string>
     <string name="there_is_only_one_rod_here">There is only one rod here</string>
+    <string name="text_zero">Current rod number: %s</string>
+
+
+    <string name="help_button_action_bar">Help</string>
+    <string name="minus" translatable="false">-</string>
+    <string name="plus" translatable="false">+</string>
 
 
 </resources>

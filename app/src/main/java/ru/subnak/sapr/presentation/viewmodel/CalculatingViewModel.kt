@@ -47,7 +47,8 @@ class CalculatingViewModel @Inject constructor(
     private val rodList = mutableListOf<Rod>()
 
     private var result: CalculatedResult? = null
-    private var rodNumber = 1
+
+    var rodNumber = 1
 
     fun getConstruction(constructionId: Int) {
         viewModelScope.launch {
@@ -60,10 +61,6 @@ class CalculatingViewModel @Inject constructor(
 
     fun setResult(construction: Construction) {
         result = CalculateComponent().calculate(construction)
-    }
-
-    fun setRodNumber(number: Int) {
-        rodNumber = number
     }
 
     private fun parseDouble(s: String?): Double {
@@ -83,7 +80,7 @@ class CalculatingViewModel @Inject constructor(
             val sx = result?.Sx?.get(rodNumber - 1)?.invoke(x)
             _resultSx.value = sx
             sx?.let {
-                if (abs(it) > rodList[rodNumber-1].tension) {
+                if (abs(it) > rodList[rodNumber - 1].tension) {
                     _errorSx.value = true
                 }
             }

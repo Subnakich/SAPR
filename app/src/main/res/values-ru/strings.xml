@@ -58,4 +58,6 @@
     <string name="select_the_rod_number">Выберите стержень</string>
     <string name="enter_local_x_coordinate">Введите локальную координату X</string>
     <string name="there_is_only_one_rod_here">Здесь только один стержень</string>
+    <string name="text_zero">Текущий стержень: %s</string>
+    <string name="help_button_action_bar">Справка</string>
 </resources>

@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.fragment.CalculatingFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/scroll_view_calculating"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
 
         <ImageView
             android:id="@+id/construction_image"
@@ -27,27 +46,55 @@
             android:id="@+id/tv_result_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
             android:gravity="center"
             android:text="@string/values_in_an_cross_section"
             android:textSize="20sp"
             tools:text="Values in an cross-section" />
 
-        <TextView
-            android:id="@+id/tv_result_select_x"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/select_the_rod_number"
-            android:textSize="16sp"
-            tools:text="Select the X value" />
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
-        <com.google.android.material.slider.Slider
-            android:id="@+id/sb_result_select_x"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:stepSize="1.0"
-            android:valueFrom="0.0" />
+            <TextView
+                android:id="@+id/tv_rod_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:textSize="20sp"
+                tools:text="@string/text_zero" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_minus"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/minus"
+                android:textSize="14sp" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_plus"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/plus"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_node_coord_x_result"
@@ -76,56 +123,61 @@
             android:stretchColumns="3">
 
             <TableRow>
+
                 <TextView
                     android:id="@+id/tv_nx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/cell_shape"
+                    style="@style/textViewStyle"
                     android:gravity="center"
                     android:text="@string/nx"
                     android:textSize="16sp"
                     tools:text="Nx" />
+
                 <TextView
                     android:id="@+id/tv_result_nx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/cell_shape"
+                    style="@style/textViewStyle"
                     android:gravity="center"
                     android:text="@string/m_dash"
                     android:textSize="16sp" />
             </TableRow>
 
             <TableRow>
+
                 <TextView
                     android:id="@+id/tv_ux"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/cell_shape"
+                    style="@style/textViewStyle"
                     android:gravity="center"
                     android:text="@string/ux"
                     android:textSize="16sp"
                     tools:text="Ux" />
+
                 <TextView
                     android:id="@+id/tv_result_ux"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/cell_shape"
+                    style="@style/textViewStyle"
                     android:gravity="center"
                     android:text="@string/m_dash"
                     android:textSize="16sp" />
             </TableRow>
 
             <TableRow>
+
                 <TextView
                     android:id="@+id/tv_sx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/cell_shape"
+                    style="@style/textViewStyle"
                     android:gravity="center"
                     android:text="@string/sx"
                     android:textSize="16sp"
@@ -136,11 +188,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/cell_shape"
+                    style="@style/textViewStyle"
                     android:gravity="center"
                     android:text="@string/m_dash"
                     android:textSize="16sp" />
             </TableRow>
         </TableLayout>
     </LinearLayout>
-</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -54,6 +54,7 @@ class ConstructionViewModel @Inject constructor(
     val errorInputTension: LiveData<Boolean>
         get() = _errorInputTension
 
+
     fun addConstruction(context: Context) {
         viewModelScope.launch {
             val bitmap = getBitmap(

@@ -95,8 +95,6 @@ class ConstructionFragment : Fragment() {
                 createSnackbarNotify(R.string.toast_rod_too_many)
             }
         }
-
-
     }
 
     private fun nodesDialog(node: Node? = null, position: Int? = null) {
@@ -383,21 +381,21 @@ class ConstructionFragment : Fragment() {
         viewModel.nodeList.observe(viewLifecycleOwner) {
             nodeListAdapter.submitList(it.toList())
             if (it.isEmpty()) {
-                binding.rvNodes.visibility = View.INVISIBLE
+                binding.rvNodes.visibility = View.GONE
                 binding.tvEmptyRvNodes.visibility = View.VISIBLE
             } else {
                 binding.rvNodes.visibility = View.VISIBLE
-                binding.tvEmptyRvNodes.visibility = View.INVISIBLE
+                binding.tvEmptyRvNodes.visibility = View.GONE
             }
         }
         viewModel.rodList.observe(viewLifecycleOwner) {
             rodListAdapter.submitList(it.toList())
             if (it.isEmpty()) {
-                binding.rvRods.visibility = View.INVISIBLE
+                binding.rvRods.visibility = View.GONE
                 binding.tvEmptyRvRods.visibility = View.VISIBLE
             } else {
                 binding.rvRods.visibility = View.VISIBLE
-                binding.tvEmptyRvRods.visibility = View.INVISIBLE
+                binding.tvEmptyRvRods.visibility = View.GONE
             }
         }
     }
@@ -414,6 +412,7 @@ class ConstructionFragment : Fragment() {
         binding.btnSaveConstruction.setOnClickListener {
             if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_NULL) {
                 viewModel.editConstruction(requireContext())
+                launchFragment(CalculatingFragment.newInstanceCalculating(constructionId))
             } else if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_PROP) {
                 createSnackbarNotify(R.string.toast_need_support)
             } else {
@@ -428,6 +427,7 @@ class ConstructionFragment : Fragment() {
         binding.btnSaveConstruction.setOnClickListener {
             if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_NULL) {
                 viewModel.addConstruction(requireContext())
+                //launchFragment(MainFragment.newInstance())
             } else if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_PROP) {
                 createSnackbarNotify(R.string.toast_need_support)
             } else {
@@ -445,6 +445,14 @@ class ConstructionFragment : Fragment() {
             }
         }
         snackbar.show()
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        requireActivity().supportFragmentManager.popBackStack()
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun parseArguments() {
