@@ -44,7 +44,7 @@
     <string name="dialog_rod_btn_apply">Принять</string>
     <string name="dialog_rod_error_input_square">Неверная площадь</string>
     <string name="dialog_rod_error_input_elastic_module">Неверный модуль упругости</string>
-    <string name="dialog_rod_error_input_tension">Неперное допускаемое напряжение</string>
+    <string name="dialog_rod_error_input_tension">Неверное допускаемое напряжение</string>
     <string name="dialog_cancel">Отмена</string>
     <string name="dialog_open">Открыть</string>
     <string name="dialog_edit">Редактировать</string>

@@ -412,7 +412,6 @@ class ConstructionFragment : Fragment() {
         binding.btnSaveConstruction.setOnClickListener {
             if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_NULL) {
                 viewModel.editConstruction(requireContext())
-                launchFragment(CalculatingFragment.newInstanceCalculating(constructionId))
             } else if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_PROP) {
                 createSnackbarNotify(R.string.toast_need_support)
             } else {
@@ -427,7 +426,6 @@ class ConstructionFragment : Fragment() {
         binding.btnSaveConstruction.setOnClickListener {
             if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_NULL) {
                 viewModel.addConstruction(requireContext())
-                //launchFragment(MainFragment.newInstance())
             } else if (viewModel.checkPropAndCountOfRods() == ConstructionViewModel.ERROR_PROP) {
                 createSnackbarNotify(R.string.toast_need_support)
             } else {
@@ -445,14 +443,6 @@ class ConstructionFragment : Fragment() {
             }
         }
         snackbar.show()
-    }
-
-    private fun launchFragment(fragment: Fragment) {
-        requireActivity().supportFragmentManager.popBackStack()
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container, fragment)
-            .addToBackStack(null)
-            .commit()
     }
 
     private fun parseArguments() {
